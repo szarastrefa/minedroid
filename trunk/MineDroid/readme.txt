@@ -81,20 +81,24 @@ Getting the source, step-by-step:
 		http://subclipse.tigris.org/servlets/ProjectProcess?pageID=p4wYuA
 	4) Install the Android development tools and ADT eclipse plugin.
 		http://developer.android.com/sdk/installing.html
-	5) Add the RUGL repository to subclipse:
+	5) Add the SVN repositories to subclipse:
 		In Eclipse, "Window" menu - "Open Perspective" - "Other"
 		Choose "SVN Repository Exploring"
 		Right-click in the currently-blank "SVN Repositories" tab. "New" - 
 			"Repository Location..."
-		The URL is "http://rugl.googlecode.com/svn"
-	6) Similarly, check out the library at 
-			"http://preflect.googlecode.com/svn/trunk"
+		The URLs for the repositories are 
+			"https://rugl.googlecode.com/svn/trunk"
+			"https://preflect.googlecode.com/svn/trunk"
+			"https://minedroid.googlecode.com/svn/trunk"
+		Add each of these
 	6) Check out the projects:
-		Click on the newly-added repository entries to open them
-		Click on "trunk" then "droid" when they appear
-		Right-click on "DroidRUGL", choose "Checkout..."
-		You don't have to change anything in the dialog, just hit "Finish"
-		Do the same thing to check out "Preflect" and "MineDroid"
+		6.1) Click on "https://rugl.googlecode.com/svn/trunk", to open it. Click
+			on "droid", then right-click on "DroidRUGL". Select "Check out..."
+			from the menu, hit OK in the dialog box.
+		6.2) From "https://preflect.googlecode.com/svn/trunk", you need the 
+			"Preflect" project
+		6.3) From "https://minedroid.googlecode.com/svn/trunk", you need the 
+			"MineDroid" project
 	7) You've now got local copies of the code - huzzah!
 			
 Stuff that should be done that I can't do by myself
