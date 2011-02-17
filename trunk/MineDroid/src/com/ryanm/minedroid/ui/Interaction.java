@@ -19,6 +19,7 @@ import com.ryanm.minedroid.ItemFactory.Item;
 import com.ryanm.minedroid.Player;
 import com.ryanm.minedroid.World;
 import com.ryanm.minedroid.chunk.Chunk;
+import com.ryanm.minedroid.chunk.Chunklet;
 import com.ryanm.preflect.annote.Summary;
 import com.ryanm.preflect.annote.Variable;
 
@@ -250,7 +251,7 @@ public class Interaction implements TouchListener
 
 		hand.strike( false );
 
-		if( targetValid )
+		if( chunk != null && targetValid )
 		{
 			if( item.block != null )
 			{ // place
@@ -285,7 +286,7 @@ public class Interaction implements TouchListener
 	{
 		Chunk chunk = updateTarget( x, y );
 
-		if( sweptItem == null )
+		if( chunk != null && sweptItem == null )
 		{
 			Block b =
 					BlockFactory.getBlock( chunk.blockTypeForPosition( targetBlock.x,
@@ -347,33 +348,40 @@ public class Interaction implements TouchListener
 		placementTargetBlock.set( gridIterate.lastGridCoords );
 
 		targetValid = false;
-		Chunk chunk = null;
+		Chunklet chunk = null;
 		do
 		{
 			chunk =
 					world.getChunklet( gridIterate.lastGridCoords.x,
-							gridIterate.lastGridCoords.y, gridIterate.lastGridCoords.z ).parent;
-
-			byte bt =
-					chunk.blockTypeForPosition( gridIterate.lastGridCoords.x,
 							gridIterate.lastGridCoords.y, gridIterate.lastGridCoords.z );
 
-			if( bt == 0 || bt == Block.Water.id || bt == Block.StillWater.id
-					|| BlockFactory.getBlock( bt ) == null )
+			if( chunk != null )
 			{
-				placementTargetBlock.set( gridIterate.lastGridCoords );
+				byte bt =
+						chunk.parent.blockTypeForPosition( gridIterate.lastGridCoords.x,
+								gridIterate.lastGridCoords.y, gridIterate.lastGridCoords.z );
 
-				gridIterate.next();
+				if( bt == 0 || bt == Block.Water.id || bt == Block.StillWater.id
+						|| BlockFactory.getBlock( bt ) == null )
+				{
+					placementTargetBlock.set( gridIterate.lastGridCoords );
+
+					gridIterate.next();
+				}
+				else
+				{
+					// we have hit the target
+					targetBlock.set( gridIterate.lastGridCoords );
+					targetValid = true;
+				}
 			}
 			else
 			{
-				// we have hit the target
-				targetBlock.set( gridIterate.lastGridCoords );
-				targetValid = true;
+				targetValid = false;
 			}
 		}
 		while( !targetValid && !gridIterate.isDone() );
 
-		return chunk;
+		return chunk == null ? null : chunk.parent;
 	}
 }
