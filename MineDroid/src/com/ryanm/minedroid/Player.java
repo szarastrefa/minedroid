@@ -278,7 +278,7 @@ public class Player
 			z = FloatMath.floor( z );
 			blockBounds.set( x, y, z, x + 1, y + 1, z + 1 );
 
-			if( b == Block.HalfBlock )
+			if( b == Block.Slab )
 			{
 				blockBounds.y.set( y, y + 0.5f );
 			}

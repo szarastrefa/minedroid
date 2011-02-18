@@ -60,14 +60,15 @@ Glitchy controls?
 	
 Getting the source:
 
-	The source is organised in three Eclipse projects at
+	The source is organised in three Eclipse projects:
 	
 	http://code.google.com/p/rugl/source/browse/#svn/trunk/droid
 	
-	You'll need the DroidRUGL and MineDroid projects from that repository, 
-	and also the Preflect project from
+	You'll need the DroidRUGL project from that repository, 
+	and also the projects at
 	
-	http://code.google.com/p/preflect
+	minedroid.googlecode.com
+	preflect.googlecode.com
 	
 	For those with an Eclipse compiler setup as prissy as mine, the missing 
 	javadoc warnings are Google's fault.

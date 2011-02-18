@@ -37,6 +37,7 @@ public abstract class TagLoader extends Loader<Tag>
 		catch( IOException e )
 		{
 			Log.e( ResourceLoader.LOG_TAG, "Problem loading tag file", e );
+			exception = e;
 		}
 	}
 }
