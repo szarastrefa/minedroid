@@ -237,9 +237,9 @@ public class BlockFactory
 	public static enum Block
 	{
 		/***/
-		Grass( ( byte ) 2, true, 3, 0, 0, 0, 2, 0 ),
-		/***/
 		Stone( ( byte ) 1, true, 1, 0 ),
+		/***/
+		Grass( ( byte ) 2, true, 3, 0, 0, 0, 2, 0 ),
 		/***/
 		Dirt( ( byte ) 3, true, 2, 0 ),
 		/***/
@@ -248,6 +248,14 @@ public class BlockFactory
 		Wood( ( byte ) 5, true, 4, 0 ),
 		/***/
 		Bedrock( ( byte ) 7, true, 1, 1 ),
+		/***/
+		Water( ( byte ) 8, false, 15, 12 ),
+		/***/
+		StillWater( ( byte ) 9, false, 15, 12 ),
+		/***/
+		Lava( ( byte ) 10, true, 15, 15 ),
+		/***/
+		StillLava( ( byte ) 11, true, 15, 15 ),
 		/***/
 		Sand( ( byte ) 12, true, 2, 1 ),
 		/***/
@@ -263,33 +271,73 @@ public class BlockFactory
 		/***/
 		Leaves( ( byte ) 18, false, 4, 3 ),
 		/***/
+		Sponge( ( byte ) 19, true, 0, 3 ),
+		/***/
 		Glass( ( byte ) 20, false, 1, 3 ),
 		/***/
-		RedstoneOre( ( byte ) 73, true, 3, 3 ),
+		LapisOre( ( byte ) 21, true, 0, 10 ),
 		/***/
-		DiamondOre( ( byte ) 56, true, 2, 3 ),
+		Lapis( ( byte ) 22, true, 0, 9 ),
 		/***/
-		Water( ( byte ) 8, false, 15, 12 ),
+		Dispenser( ( byte ) 23, true, 13, 2, 13, 2, 13, 2, 14, 2, 1, 0, 1, 0 ),
 		/***/
-		StillWater( ( byte ) 9, false, 15, 12 ),
+		SandStone( ( byte ) 24, true, 0, 12, 0, 11, 0, 13 ),
 		/***/
-		Lava( ( byte ) 10, true, 15, 15 ),
+		NoteBlock( ( byte ) 25, true, 10, 4 ),
 		/***/
-		StillLava( ( byte ) 11, true, 15, 15 ),
+		Wool( ( byte ) 35, true, 0, 4 ),
+		/***/
+		Gold( ( byte ) 41, true, 7, 2 ),
+		/***/
+		Iron( ( byte ) 42, true, 6, 2 ),
+		/***/
+		DoubleSlab( ( byte ) 43, true, 5, 0, 6, 0 ),
+		/** These things are a complete ball-ache */
+		Slab( ( byte ) 44, false, 5, 0, 6, 0 ),
+		/***/
+		Brick( ( byte ) 45, true, 7, 0 ),
+		/***/
+		TNT( ( byte ) 46, true, 8, 0, 9, 0, 10, 0 ),
+		/***/
+		Bookshelf( ( byte ) 47, true, 3, 2 ),
+		/***/
+		MossyCobble( ( byte ) 48, true, 4, 2 ),
 		/***/
 		Obsidian( ( byte ) 49, true, 5, 2 ),
 		/***/
-		TilledEarth( ( byte ) 60, true, 2, 0, 7, 5, 2, 0 ),
-		/***/
 		Chest( ( byte ) 54, true, 10, 1, 10, 1, 10, 1, 11, 1, 9, 1, 9, 1 ),
+		/***/
+		DiamondOre( ( byte ) 56, true, 2, 3 ),
+		/***/
+		Diamond( ( byte ) 57, true, 8, 1 ),
+		/***/
+		WorkBench( ( byte ) 58, true, 11, 3, 12, 3, 11, 3, 12, 3, 11, 2, 11, 2 ),
+		/***/
+		TilledEarth( ( byte ) 60, true, 2, 0, 7, 5, 2, 0 ),
 		/***/
 		Oven( ( byte ) 61, true, 13, 2, 13, 2, 13, 2, 12, 2, 1, 0, 1, 0 ),
 		/***/
-		WorkBench( ( byte ) 58, true, 11, 3, 12, 3, 11, 3, 12, 3, 11, 2, 11, 2 ),
-		/** These buggers are a right ball-ache */
-		HalfBlock( ( byte ) 44, false, 5, 0, 6, 0 ),
+		RedstoneOre( ( byte ) 73, true, 3, 3 ),
 		/***/
-		DoubleHalfBlock( ( byte ) 43, true, 5, 0, 6, 0 );
+		SnowyGrass( ( byte ) 78, true, 4, 4, 2, 4, 2, 0 ),
+		/***/
+		Ice( ( byte ) 79, false, 1, 0 ),
+		/***/
+		Snow( ( byte ) 80, true, 1, 0 ),
+		/***/
+		Cactus( ( byte ) 81, false, 6, 4, 5, 4, 7, 4 ),
+		/***/
+		Clay( ( byte ) 82, true, 8, 4 ),
+		/***/
+		Jukebox( ( byte ) 84, true, 10, 4, 11, 4, 10, 4 ),
+		/***/
+		Pumpkin( ( byte ) 86, true, 6, 7, 6, 7, 6, 7, 7, 7, 6, 6, 6, 6 ),
+		/***/
+		Netherrack( ( byte ) 87, true, 7, 6 ),
+		/***/
+		SoulSand( ( byte ) 88, true, 8, 6 ),
+		/***/
+		GlowStone( ( byte ) 89, true, 9, 6 );
 
 		/***/
 		public final byte id;

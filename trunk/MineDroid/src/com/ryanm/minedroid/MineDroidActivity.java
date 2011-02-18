@@ -14,6 +14,7 @@ import com.ryanm.droid.rugl.Game;
 import com.ryanm.droid.rugl.GameActivity;
 import com.ryanm.droid.rugl.gl.GLVersion;
 import com.ryanm.droid.rugl.res.ResourceLoader;
+import com.ryanm.droid.rugl.util.ExceptionHandler;
 import com.ryanm.droid.rugl.util.geom.Vector3f;
 import com.ryanm.minedroid.nbt.Tag;
 import com.ryanm.minedroid.nbt.TagLoader;
@@ -78,9 +79,12 @@ public class MineDroidActivity extends GameActivity
 						{
 							if( resource == null )
 							{
-								showToast( "Could not load world level.dat, check logcat", true );
+								showToast(
+										"Could not load world level.dat\n"
+												+ exception.getClass().getSimpleName() + ":"
+												+ exception.getMessage(), true );
 
-								Log.e( Game.RUGL_TAG, "Problem loading level.dat" );
+								ExceptionHandler.handle( exception );
 
 								finish();
 							}

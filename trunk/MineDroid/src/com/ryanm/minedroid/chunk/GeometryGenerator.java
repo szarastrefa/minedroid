@@ -71,7 +71,7 @@ public class GeometryGenerator
 
 							float light = c.light( xi, yi, zi );
 
-							if( b == Block.HalfBlock )
+							if( b == Block.Slab )
 							{ // wow, so now I know why Markus doesn't like
 								// the half-blocks
 								light = c.light( xi, yi + 1, zi );
