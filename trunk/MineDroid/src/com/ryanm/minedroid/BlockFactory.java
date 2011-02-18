@@ -18,7 +18,8 @@ import com.ryanm.droid.rugl.util.Colour;
 import com.ryanm.droid.rugl.util.Trig;
 
 /**
- * Defines block data, can add face geometry to {@link ShapeBuilder}s
+ * Defines block data, can add face geometry to {@link ShapeBuilder}s.
+ * Thanks go to Richard Invent for the missing block definitions.
  * 
  * @author ryanm
  */
