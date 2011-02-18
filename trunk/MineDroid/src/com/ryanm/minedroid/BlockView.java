@@ -98,13 +98,20 @@ public class BlockView extends Phase
 	@Override
 	public void advance( float delta )
 	{
-
 		gui.advance( delta );
 
+		// steering
 		cam.advance( delta, gui.right.x, gui.right.y );
 
+		// alternative steering - compass/accelerometer based
+		// cam.setHeading( heading );
+		// cam.setElevation( elevation );
+		// cam.updateVectors();
+
+		// movement
 		player.advance( delta, cam, gui );
 
+		// chunk loading
 		world.advance( player.position.x, player.position.z );
 	}
 
