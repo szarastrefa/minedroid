@@ -70,7 +70,7 @@ public class BlockView extends Phase
 
 		if( gui == null )
 		{
-			gui = new GUI( player, world, cam );
+			gui = new GUI( player, world, cam, game.getSensorManager() );
 		}
 
 		BlockFactory.loadTexture();
@@ -98,15 +98,8 @@ public class BlockView extends Phase
 	@Override
 	public void advance( float delta )
 	{
-		gui.advance( delta );
-
 		// steering
-		cam.advance( delta, gui.right.x, gui.right.y );
-
-		// alternative steering - compass/accelerometer based
-		// cam.setHeading( heading );
-		// cam.setElevation( elevation );
-		// cam.updateVectors();
+		gui.advance( delta, cam );
 
 		// movement
 		player.advance( delta, cam, gui );

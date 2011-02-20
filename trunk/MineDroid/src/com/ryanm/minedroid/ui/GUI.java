@@ -3,6 +3,7 @@ package com.ryanm.minedroid.ui;
 
 import static android.opengl.GLES10.GL_DEPTH_BUFFER_BIT;
 import static android.opengl.GLES10.glClear;
+import android.hardware.SensorManager;
 import android.util.Log;
 
 import com.ryanm.droid.rugl.Game;
@@ -17,13 +18,11 @@ import com.ryanm.droid.rugl.input.TouchStickArea;
 import com.ryanm.droid.rugl.res.FontLoader;
 import com.ryanm.droid.rugl.res.ResourceLoader;
 import com.ryanm.droid.rugl.text.Font;
-import com.ryanm.droid.rugl.text.Readout;
 import com.ryanm.droid.rugl.text.TextShape;
 import com.ryanm.droid.rugl.util.Colour;
 import com.ryanm.droid.rugl.util.FPSCamera;
 import com.ryanm.minedroid.Player;
 import com.ryanm.minedroid.World;
-import com.ryanm.minedroid.chunk.GeometryGenerator;
 import com.ryanm.preflect.annote.Category;
 import com.ryanm.preflect.annote.Summary;
 import com.ryanm.preflect.annote.Variable;
@@ -62,12 +61,6 @@ public class GUI
 			size / 2 );
 
 	/***/
-	@Variable( "Chunklet info display" )
-	@Summary( "Show chunks awaiting loading, chunklets "
-			+ "awaiting geometry generation, and rendered chunklet count" )
-	public boolean printQueues = true;
-
-	/***/
 	@Variable
 	public final Hotbar hotbar;
 
@@ -79,8 +72,6 @@ public class GUI
 	@Variable
 	public final Interaction interaction;
 
-	private Readout loadQueue, geomQueue, chunkletCount;
-
 	private StackedRenderer r = new StackedRenderer();
 
 	private TextShape notification;
@@ -88,6 +79,8 @@ public class GUI
 	private float notifyTime = 0;
 
 	private Font font;
+
+	private final SensorSteering sensorSteering;
 
 	private TouchListener[] widgets;
 
@@ -127,12 +120,14 @@ public class GUI
 	 * @param player
 	 * @param world
 	 * @param camera
+	 * @param sm
 	 */
-	public GUI( final Player player, World world, FPSCamera camera )
+	public GUI( final Player player, World world, FPSCamera camera, SensorManager sm )
 	{
 		hand = new Hand( player );
 		interaction = new Interaction( player, world, camera, hand );
 		hotbar = new Hotbar( player, interaction );
+		sensorSteering = new SensorSteering( sm );
 
 		rightTap.listener = player.jumpCrouchListener;
 
@@ -164,26 +159,17 @@ public class GUI
 			public void fontLoaded()
 			{
 				font = resource;
-
-				loadQueue = new Readout( font, Colour.black, "Load queue = ", false, 2, 0 );
-				loadQueue.translate( 10,
-						Game.height - 10 - loadQueue.getBounds().y.getSpan(), 0 );
-
-				geomQueue = new Readout( font, Colour.black, "Geom queue = ", false, 3, 0 );
-				geomQueue.translate( 10,
-						Game.height - 20 - 2 * geomQueue.getBounds().y.getSpan(), 0 );
-
-				chunkletCount = new Readout( font, Colour.black, "Chunklets = ", false, 3, 0 );
-				chunkletCount.translate( 10, Game.height - 40 - 3
-						* chunkletCount.getBounds().y.getSpan(), 0 );
 			}
 		} );
 	}
 
 	/**
 	 * @param delta
+	 *           time delta
+	 * @param cam
+	 *           to apply steering to
 	 */
-	public void advance( float delta )
+	public void advance( float delta, FPSCamera cam )
 	{
 		left.advance();
 		right.advance();
@@ -198,6 +184,16 @@ public class GUI
 		if( notifyTime < 0 )
 		{
 			notification = null;
+		}
+
+		// steering
+		if( sensorSteering.enabled() )
+		{
+			sensorSteering.advance( cam );
+		}
+		else
+		{
+			cam.advance( delta, right.x, right.y );
 		}
 	}
 
@@ -215,7 +211,12 @@ public class GUI
 		r.render();
 
 		left.draw( r );
-		right.draw( r );
+
+		if( !sensorSteering.enabled() )
+		{
+			right.draw( r );
+		}
+
 		rightTap.draw( r );
 
 		hotbar.draw( r );
@@ -223,19 +224,6 @@ public class GUI
 		if( notification != null )
 		{
 			notification.render( r );
-		}
-
-		if( printQueues && loadQueue != null )
-		{
-			loadQueue.updateValue( ResourceLoader.queueSize() );
-			loadQueue.render( r );
-
-			geomQueue.updateValue( GeometryGenerator.getChunkletQueueSize() );
-			geomQueue.render( r );
-
-			chunkletCount.updateValue( World.renderedChunklets );
-
-			chunkletCount.render( r );
 		}
 
 		r.render();
@@ -253,6 +241,33 @@ public class GUI
 			notification.translate( ( 800 - notification.getBounds().x.getSpan() ) / 2, 100,
 					0 );
 			notifyTime = 1.5f;
+		}
+	}
+
+	/**
+	 * @return <code>true</code> if we are using sensor-based steering
+	 */
+	@Variable( "Sensor steering" )
+	@Summary( "Pretend your phone is a window into minecraft" )
+	@Category( "Controls" )
+	public boolean isSensorSteering()
+	{
+		return sensorSteering.enabled();
+	}
+
+	/**
+	 * @param b
+	 */
+	@Variable( "Sensor steering" )
+	public void setSensorSteering( boolean b )
+	{
+		if( b )
+		{
+			sensorSteering.enable();
+		}
+		else
+		{
+			sensorSteering.disable();
 		}
 	}
 }

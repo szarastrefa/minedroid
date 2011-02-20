@@ -1,7 +1,7 @@
 Thanks to:
 	Credits for the block texture go to rhodox. Go to http://painterlypack.net/
 	and fling some ducats at him.
-	Richard Invent for the help debugging on OpenGLES1.0 devices
+	Ricard Ziegler for the help debugging on OpenGLES1.0 devices
 
 Installation:
 
