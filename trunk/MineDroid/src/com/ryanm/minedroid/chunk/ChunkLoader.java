@@ -1,15 +1,14 @@
 
 package com.ryanm.minedroid.chunk;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.DataInputStream;
 
 import android.util.Log;
 
 import com.ryanm.droid.rugl.Game;
 import com.ryanm.droid.rugl.res.ResourceLoader.Loader;
-import com.ryanm.droid.rugl.util.math.Range;
 import com.ryanm.minedroid.World;
+import com.ryanm.minedroid.nbt.RegionFileCache;
 
 /**
  * This is packaged up like this so it can happen on the resource
@@ -40,22 +39,23 @@ public abstract class ChunkLoader extends Loader<Chunk>
 	@Override
 	public void load()
 	{
-		String dir1 = Integer.toString( ( int ) Range.wrap( x, 0, 64 ), 36 );
-		String dir2 = Integer.toString( ( int ) Range.wrap( z, 0, 64 ), 36 );
-
-		File chunkFile =
-				new File( world.dir, dir1 + "/" + dir2 + "/c." + Integer.toString( x, 36 )
-						+ "." + Integer.toString( z, 36 ) + ".dat" );
 
 		try
 		{
-			resource = new Chunk( world, chunkFile );
-		}
-		catch( IOException ioe )
-		{
-			Log.e( Game.RUGL_TAG, "Problem loading chunk (" + x + "," + z + ") from "
-					+ chunkFile, ioe );
+			DataInputStream is = RegionFileCache.getChunkDataInputStream( world.dir, x, z );
 
+			resource = new Chunk( world, is );
+
+			if( resource.chunkX != x || resource.chunkZ != z )
+			{
+				Log.e( Game.RUGL_TAG, "expected " + toString() + ", got " + resource );
+			}
+		}
+		catch( Exception e )
+		{
+			Log.e( Game.RUGL_TAG, "Problem loading chunk (" + x + "," + z + ")", e );
+
+			exception = e;
 			resource = null;
 		}
 	}

@@ -1,9 +1,8 @@
 
 package com.ryanm.minedroid.chunk;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import com.ryanm.minedroid.World;
 import com.ryanm.minedroid.nbt.Tag;
@@ -52,13 +51,14 @@ public class Chunk
 
 	/**
 	 * @param world
-	 * @param f
+	 * @param is
 	 * @throws IOException
 	 */
-	public Chunk( World world, File f ) throws IOException
+	public Chunk( World world, InputStream is ) throws IOException
 	{
 		this.world = world;
-		Tag ct = Tag.readFrom( new FileInputStream( f ) );
+		Tag ct = Tag.readFrom( is, false );
+
 		chunkX = ( ( Integer ) ct.findTagByName( "xPos" ).getValue() ).intValue();
 		chunkZ = ( ( Integer ) ct.findTagByName( "zPos" ).getValue() ).intValue();
 		blockData = ( byte[] ) ct.findTagByName( "Blocks" ).getValue();
@@ -386,5 +386,11 @@ public class Chunk
 		{
 			chunklets[ i ].unload();
 		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Chunk ( " + chunkX + ", " + chunkZ + " )";
 	}
 }

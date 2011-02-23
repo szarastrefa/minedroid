@@ -32,7 +32,7 @@ public abstract class TagLoader extends Loader<Tag>
 	{
 		try
 		{
-			resource = Tag.readFrom( new FileInputStream( f ) );
+			resource = Tag.readFrom( new FileInputStream( f ), true );
 		}
 		catch( IOException e )
 		{

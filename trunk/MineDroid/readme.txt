@@ -1,7 +1,9 @@
 Thanks to:
 	Credits for the block texture go to rhodox. Go to http://painterlypack.net/
 	and fling some ducats at him.
-	Ricard Ziegler for the help debugging on OpenGLES1.0 devices
+	Ricard Ziegler for the help debugging on OpenGLES1.0 devices and for the 
+	impetus behind sensor-based steering (necessity truly is the mother of 
+	invention - he has a single-touch device)
 
 Installation:
 
@@ -38,6 +40,14 @@ Controls:
 	The menu button will give an extensive tree of configuration options.
 	Save a configuration with the name "default" (note all lower-case), and it'll
 	be applied automatically at startup
+	
+Sensor-based steering
+
+	You can also use your phone as a magic window into you minecraft world with
+	sensor-based steering. Enable it in the settings menu (hit the menu key, go 
+	to "BlockView/Interface/Sensor Steering").
+	It uses the accelerometer and magnetometer to detect the phone's orientation,
+	so it'll get glitchy if you rotate too fast or get close to ferrous objects.
 	
 Glitchy controls?
 

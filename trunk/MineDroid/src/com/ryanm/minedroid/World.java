@@ -105,8 +105,8 @@ public class World
 		this.dir = dir;
 		this.startPosition = startPosition;
 
-		chunkPosX = ( int ) startPosition.getX() / 16;
-		chunkPosZ = ( int ) startPosition.getZ() / 16;
+		chunkPosX = ( int ) Math.floor( startPosition.getX() / 16.0f );
+		chunkPosZ = ( int ) Math.floor( startPosition.getZ() / 16.0f );
 
 		Game.addSurfaceLIstener( new Game.SurfaceListener() {
 			@Override
@@ -420,6 +420,8 @@ public class World
 		}
 
 		renderer.render();
+
+		// Log.i( Game.RUGL_TAG, renderedChunklets + " drawn" );
 
 		Arrays.fill( renderList, null );
 		renderListSize = 0;
