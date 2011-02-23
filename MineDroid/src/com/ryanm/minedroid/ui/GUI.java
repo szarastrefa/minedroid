@@ -80,7 +80,9 @@ public class GUI
 
 	private Font font;
 
-	private final SensorSteering sensorSteering;
+	/***/
+	@Variable
+	public final SensorSteering sensorSteering;
 
 	private TouchListener[] widgets;
 
@@ -172,7 +174,12 @@ public class GUI
 	public void advance( float delta, FPSCamera cam )
 	{
 		left.advance();
-		right.advance();
+
+		if( !sensorSteering.isEnabled() )
+		{
+			right.advance();
+		}
+
 		rightTap.advance();
 
 		hotbar.advance( delta );
@@ -187,7 +194,7 @@ public class GUI
 		}
 
 		// steering
-		if( sensorSteering.enabled() )
+		if( sensorSteering.isEnabled() )
 		{
 			sensorSteering.advance( cam );
 		}
@@ -212,7 +219,7 @@ public class GUI
 
 		left.draw( r );
 
-		if( !sensorSteering.enabled() )
+		if( !sensorSteering.isEnabled() )
 		{
 			right.draw( r );
 		}
@@ -241,33 +248,6 @@ public class GUI
 			notification.translate( ( 800 - notification.getBounds().x.getSpan() ) / 2, 100,
 					0 );
 			notifyTime = 1.5f;
-		}
-	}
-
-	/**
-	 * @return <code>true</code> if we are using sensor-based steering
-	 */
-	@Variable( "Sensor steering" )
-	@Summary( "Pretend your phone is a window into minecraft" )
-	@Category( "Controls" )
-	public boolean isSensorSteering()
-	{
-		return sensorSteering.enabled();
-	}
-
-	/**
-	 * @param b
-	 */
-	@Variable( "Sensor steering" )
-	public void setSensorSteering( boolean b )
-	{
-		if( b )
-		{
-			sensorSteering.enable();
-		}
-		else
-		{
-			sensorSteering.disable();
 		}
 	}
 }

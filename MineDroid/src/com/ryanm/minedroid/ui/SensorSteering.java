@@ -10,12 +10,16 @@ import com.ryanm.droid.rugl.util.FPSCamera;
 import com.ryanm.droid.rugl.util.Trig;
 import com.ryanm.droid.rugl.util.geom.Vector3f;
 import com.ryanm.droid.rugl.util.math.LowPassFilter;
+import com.ryanm.preflect.annote.Summary;
+import com.ryanm.preflect.annote.Variable;
 
 /**
  * Accelerometer/magnetometer based steering
  * 
  * @author ryanm
  */
+@Variable( "Sensor steering" )
+@Summary( "Pretend your phone is a window into minecraft" )
 public class SensorSteering
 {
 	private boolean enabled = false;
@@ -35,6 +39,11 @@ public class SensorSteering
 	private SensorManager sm;
 
 	private final LowPassFilter[] vectorFilters = new LowPassFilter[ 3 ];
+
+	/***/
+	@Variable( "Filter alpha" )
+	@Summary( "Controls the smoothing/latency of the filter, in range 0-1" )
+	public float filterAlpha = 0.1f;
 
 	private SensorEventListener compass = new SensorEventListener() {
 
@@ -79,22 +88,37 @@ public class SensorSteering
 		}
 	}
 
-	/***/
-	public void enable()
+	/**
+	 * @param b
+	 */
+	@Variable( "Enabled" )
+	public void setEnabled( boolean b )
 	{
-		enabled = true;
-		Sensor c = sm.getDefaultSensor( Sensor.TYPE_MAGNETIC_FIELD );
-		enabled &= sm.registerListener( compass, c, SensorManager.SENSOR_DELAY_GAME );
+		enabled = b;
 
-		Sensor a = sm.getDefaultSensor( Sensor.TYPE_ACCELEROMETER );
-		enabled &= sm.registerListener( gravity, a, SensorManager.SENSOR_DELAY_GAME );
+		if( enabled )
+		{
+			Sensor c = sm.getDefaultSensor( Sensor.TYPE_MAGNETIC_FIELD );
+			enabled &= sm.registerListener( compass, c, SensorManager.SENSOR_DELAY_GAME );
+
+			Sensor a = sm.getDefaultSensor( Sensor.TYPE_ACCELEROMETER );
+			enabled &= sm.registerListener( gravity, a, SensorManager.SENSOR_DELAY_GAME );
+		}
+		else
+		{
+			sm.unregisterListener( compass );
+			sm.unregisterListener( gravity );
+		}
 	}
 
-	/***/
-	public void disable()
+	/**
+	 * @return <code>true</code> if we are currently using sensor-based
+	 *         steering
+	 */
+	@Variable( "Enabled" )
+	public boolean isEnabled()
 	{
-		sm.unregisterListener( compass );
-		sm.unregisterListener( gravity );
+		return enabled;
 	}
 
 	/**
@@ -119,10 +143,9 @@ public class SensorSteering
 			vectorFilters[ 1 ].addInput( cam.forward.y );
 			vectorFilters[ 2 ].addInput( cam.forward.z );
 
-			float alpha = 0.1f;
-			cam.forward.set( vectorFilters[ 0 ].getOutput( alpha ),
-					vectorFilters[ 1 ].getOutput( alpha ),
-					vectorFilters[ 2 ].getOutput( alpha ) );
+			cam.forward.set( vectorFilters[ 0 ].getOutput( filterAlpha ),
+					vectorFilters[ 1 ].getOutput( filterAlpha ),
+					vectorFilters[ 2 ].getOutput( filterAlpha ) );
 
 			// right vector...
 			cam.right.set( cam.forward.z, 0, -cam.forward.x );
@@ -134,11 +157,24 @@ public class SensorSteering
 	}
 
 	/**
-	 * @return <code>true</code> if we are currently using sensor-based
-	 *         steering
+	 * @param samples
 	 */
-	public boolean enabled()
+	@Variable( "Filter length" )
+	@Summary( "The number of samples held by the filters" )
+	public void setFilterLength( int samples )
 	{
-		return enabled;
+		for( int i = 0; i < vectorFilters.length; i++ )
+		{
+			vectorFilters[ i ] = new LowPassFilter( samples );
+		}
+	}
+
+	/**
+	 * @return filter length
+	 */
+	@Variable( "Filter length" )
+	public int getFilterLength()
+	{
+		return vectorFilters[ 0 ].getLength();
 	}
 }
