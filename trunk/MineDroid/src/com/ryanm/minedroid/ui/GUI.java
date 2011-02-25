@@ -141,7 +141,7 @@ public class GUI
 			@Override
 			public void onClick()
 			{
-				interaction.action( player.inHand, Game.width / 2, Game.height / 2 );
+				interaction.action( player.inHand, 400, 240 );
 			}
 
 			@Override
@@ -153,8 +153,6 @@ public class GUI
 
 		right.listener = strikey;
 		left.listener = strikey;
-
-		Touch.setScreenSize( 800, 480, Game.width, Game.height );
 
 		ResourceLoader.load( new FontLoader( com.ryanm.droid.rugl.R.raw.font, false ) {
 			@Override
@@ -210,7 +208,7 @@ public class GUI
 	 */
 	public void draw()
 	{
-		GLUtil.scaledOrtho( 800, 480, Game.width, Game.height, -1, 1 );
+		GLUtil.scaledOrtho( 800, 480, Game.screenWidth, Game.screenHeight, -1, 1 );
 		glClear( GL_DEPTH_BUFFER_BIT );
 
 		hand.draw( r );
