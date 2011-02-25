@@ -3,7 +3,6 @@ package com.ryanm.minedroid.ui;
 
 import android.util.FloatMath;
 
-import com.ryanm.droid.rugl.Game;
 import com.ryanm.droid.rugl.input.Touch;
 import com.ryanm.droid.rugl.input.Touch.Pointer;
 import com.ryanm.droid.rugl.input.Touch.TouchListener;
@@ -153,7 +152,7 @@ public class Interaction implements TouchListener
 		else if( constantStriking || touchSticksHeld )
 		{
 			hand.repeatedStrike( false );
-			held( Game.width / 2, Game.height / 2, delta );
+			held( 400, 240, delta );
 		}
 		else if( touch != null && ( player.inHand != null || sweptItem != null ) )
 		{
@@ -325,15 +324,15 @@ public class Interaction implements TouchListener
 
 	/**
 	 * @param x
-	 *           in pixels
+	 *           in screen-space
 	 * @param y
-	 *           in pixels
+	 *           in screen-space
 	 * @return The {@link Chunk} containing the targeted block
 	 */
 	private Chunk updateTarget( float x, float y )
 	{
-		x = 2 * Range.toRatio( x, 0, Game.width ) - 1;
-		y = 2 * Range.toRatio( y, 0, Game.height ) - 1;
+		x = 2 * Range.toRatio( x, 0, 800 ) - 1;
+		y = 2 * Range.toRatio( y, 0, 480 ) - 1;
 
 		// unproject
 		camera.unProject( x, y, actionDirection );
