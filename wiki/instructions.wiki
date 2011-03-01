@@ -6,15 +6,15 @@ how to install, use, and get the most out of MineDroid.
 = installation =
 
 
-1) Install the apk as usual with
+*1)* Install the apk as usual with
 	"adb -d install MineDroid.apk"
   or download it from your phone's browser and tap it in the download list to install.
 
-2) Run the app, a ".minecraft/saves" directory will be created on your phone's storage.
+ *2)* Run the app, a ".minecraft/saves" directory will be created on your phone's storage.
+
+ *3)* Copy your "World1" directory over into the saves directory on your phone.
 	
-3) Copy your "World1" directory over into the saves directory on your phone.
-	
-3) That's it. If there's some problem with loading the level.dat in the save directory you'll get a notification when you try to start the app.
+ *That's it.* If there's some problem with loading the level.dat in the save directory you'll get a notification when you try to start the app.
 	
 *note*
 The starting position of the camera is taken from the level.dat file and the nether is not supported, so make sure you save your game in the over-world before you copy the save across
