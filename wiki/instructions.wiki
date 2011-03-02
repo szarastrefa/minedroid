@@ -6,13 +6,11 @@ how to install, use, and get the most out of MineDroid.
 = installation =
 
 
- 1) Install the apk as usual with
+ # Install the apk as usual with
 	"adb -d install MineDroid.apk"
-  or download it from your phone's browser and tap it in the download list to install.
-
- 2) Run the app, a ".minecraft/saves" directory will be created on your phone's storage.
-
- 3) Copy your "World1" directory over into the saves directory on your phone.
+or download it from your phone's browser and tap it in the download list to install.
+ # Run the app, a ".minecraft/saves" directory will be created on your phone's storage.
+ # Copy your "World1" directory over into the saves directory on your phone.
 	
 That's it. If there's some problem with loading the level.dat in the save directory you'll get a notification when you try to start the app.
 	
@@ -23,13 +21,13 @@ The starting position of the camera is taken from the level.dat file and the net
 
 = how to play =
 
-*movement*
+== movement ==
 
 The squares in the corners are thumbstick, left for movement, right for steering 
 
 Tap or swipe upwards on the rectangle above the right thumbstick to jump, long-press or swipe downwards to crouch.
 
-*NEW Sensor-based steering*
+== *NEW* Sensor-based steering ==
 
 (must be enabled in the menu first)
 
@@ -37,7 +35,7 @@ You can also use your phone as a magic window into you minecraft world with sens
 
 It uses the accelerometer and magnetometer to detect the phone's orientation, so it'll get glitchy if you rotate too fast or get close to ferrous objects.
 
-*temporary place and break blocks*
+== temporary place and break blocks ==
 	
 Tap on the hot bar to select a tool.
 	
@@ -45,12 +43,7 @@ Tap either thumbstick to use the held item at the center of the screen, tap on t
 Appropriate tool use (e.g.: a shovel on dirt or a pick on stone) is made easy:	a single tap initiates the block-breaking, which will continue as long as the player is in range of the target block. Inappropriate tool use is made difficult: the touch must be held on target until it is broken.	
 Blocks can be dragged from the hot bar and placed immediately, without	having to select it as a held item
 
-= Menu = 
+== Menu == 
 
-to get the most out of MineDroid, play around with the settings by pressing the menu key, usually you will want to look around in minedroid and you will find more expansion
-
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+to get the most out of MineDroid, play around with the settings 
+(see Menu)
