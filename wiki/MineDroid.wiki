@@ -4,6 +4,6 @@ MineDroid is a android viewer / concept design for Minecraft that lets you: use 
 
 = pages of intrest =
 
-=== *instructions* ===
+[http://code.google.com/p/minedroid/wiki/instructions Instructions]
 
-=== *Menu* ===
+[http://code.google.com/p/minedroid/wiki/Menu Menu]
