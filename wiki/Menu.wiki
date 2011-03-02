@@ -1,0 +1,42 @@
+= Menu = 
+
+To get the most out of MineDroid its best to play around with the settings, here you will find how to use and automatically apply settings.
+
+== find what your looking for ==
+
+pressing the menu key will open the menu (kinda obvious)
+here is a tree of all options in the menu
+
+BlockView (MineDroid settings)
+
+DroidRUGL (don't change these unless you know what your doing)
+
+
+=== BlockView ===
+
+expands to
+
+ * Camera (view and steering options (not controls but *has a must change setting for view invert*))
+
+ * Interface (contains control options like sensor steering touch pad controls ect.)
+
+ * Player (contains fly / ghost mode, reset location, and advanced player options)
+
+ * sky color (obvious there)
+
+ * World (chunk loading and view / render options)
+
+
+== How to Auto apply setings on start! ==
+
+pressing the back or menu key on the first menu will open a pop up showing 
+
+apply, Persist and Cancel.
+
+you want to press Persist.
+
+then Save, Load, Delete will appearer,
+
+create a new save and name it *"default"* (this will load on start)
+
+thats it! you did it!
