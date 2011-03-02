@@ -43,7 +43,7 @@ Tap either thumbstick to use the held item at the center of the screen, tap on t
 Appropriate tool use (e.g.: a shovel on dirt or a pick on stone) is made easy:	a single tap initiates the block-breaking, which will continue as long as the player is in range of the target block. Inappropriate tool use is made difficult: the touch must be held on target until it is broken.	
 Blocks can be dragged from the hot bar and placed immediately, without	having to select it as a held item
 
-== Menu == 
+== [http://code.google.com/p/minedroid/wiki/Menu Menu] == 
 
 to get the most out of MineDroid, play around with the settings 
-(see Menu)
+(see [http://code.google.com/p/minedroid/wiki/Menu Menu])
