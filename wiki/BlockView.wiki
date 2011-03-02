@@ -2,8 +2,12 @@
 
 expands to
 
-Camera (view and steering options (not controls but has a must change setting for view invert))
-Interface (contains control options like sensor steering touch pad controls ect.)
-Player (contains fly / ghost mode, reset location, and advanced player options)
-sky color (obvious there)
-World (chunk loading and view / render options)
+ * Camera (view and steering options (not controls but has a must change setting for view invert))
+
+ * Interface (contains control options like sensor steering touch pad controls ect.)
+
+ * Player (contains fly / ghost mode, reset location, and advanced player options)
+
+ * sky color (obvious there)
+
+ * World (chunk loading and view / render options)
