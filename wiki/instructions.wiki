@@ -1,7 +1,7 @@
 = instructions =
 
-how to install, use, and get the most out of MineDroid.
-
+=== how to install, use, and get the most out of MineDroid. ===
+ 
 
 = installation =
 
