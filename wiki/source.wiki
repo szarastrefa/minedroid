@@ -1,0 +1,45 @@
+= Getting the source =
+
+The source is organised in three Eclipse projects:
+	
+http://code.google.com/p/rugl/source/browse/#svn/trunk/droid
+	
+You'll need the DroidRUGL project from that repository, and also the projects at
+	
+	minedroid.googlecode.com
+	preflect.googlecode.com
+	
+For those with an Eclipse compiler setup as prissy as mine, the missing javadoc warnings are Google's fault.
+	
+== step-by-step ==
+
+1) Download and install "Eclipse IDE for Java Developers" from
+	http://www.eclipse.org/downloads/
+
+2) Open Eclipse and create a new workspace
+
+3) Install the subclipse SVN plugin for eclipse. Instructions at
+	http://subclipse.tigris.org/servlets/ProjectProcess?pageID=p4wYuA
+
+4) Install the Android development tools and ADT eclipse plugin.
+	http://developer.android.com/sdk/installing.html
+
+5) Add the SVN repositories to subclipse:
+    In Eclipse, "Window" menu - "Open Perspective" - "Other"
+    Choose "SVN Repository Exploring"
+    Right-click in the currently-blank "SVN Repositories" tab. "New" - 
+		"Repository Location..."
+	The URLs for the repositories are 
+		"https://rugl.googlecode.com/svn/trunk"
+		"https://preflect.googlecode.com/svn/trunk"
+		"https://minedroid.googlecode.com/svn/trunk"
+	Add each of these
+
+6) Check out the projects:
+ 6.1) Click on "https://rugl.googlecode.com/svn/trunk", to open it. Click on "droid", then right-click on "DroidRUGL". Select "Check out..." from the menu, hit OK in the dialog box.
+		
+6.2) From "https://preflect.googlecode.com/svn/trunk", you need the "Preflect" project
+
+6.3) From "https://minedroid.googlecode.com/svn/trunk", you need the "MineDroid" project
+
+=== 7) You've now got local copies of the code - huzzah! ===
