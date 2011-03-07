@@ -7,3 +7,5 @@ MineDroid is a android viewer / concept design for Minecraft that lets you: use 
 [http://code.google.com/p/minedroid/wiki/instructions Instructions]
 
 [http://code.google.com/p/minedroid/wiki/Menu Menu]
+
+[http://code.google.com/p/minedroid/wiki/source How to get the source code]
