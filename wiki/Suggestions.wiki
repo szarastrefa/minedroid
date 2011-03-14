@@ -1,0 +1,23 @@
+= Suggestions =
+
+comment below to have your idea added and possibly made in future versions of minedroid!
+
+* = not likely to happen
+** = VERY unlikely to happen
+*** = stupid and VERY unlikely to happen
+
+==== more blocks ====
+
+==== crafting** ====
+
+==== no shadows switch ====
+
+==== user loaded texture packs ====
+
+==== minecarts/boats* ====
+
+==== float in water, sink when crouched ====
+
+==== mobs** ====
+
+==== terrain generation** ====
