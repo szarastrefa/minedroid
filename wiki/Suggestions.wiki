@@ -15,12 +15,22 @@ comment below to have your idea added and possibly made in future versions of mi
 
 ==== no shadows switch ====
 
+for exploring caves
+
+==== torches# ====
+
+may have compatibility issues and lag, for exploring caves
+
 ==== user loaded texture packs ====
 
 ==== minecarts/boats# ====
+
+extra physics needed.
 
 ==== float in water, sink when crouched ====
 
 ==== mobs## ====
 
-==== terrain generation## ====
+==== terrain generation### ====
+
+would lag so much its silly.
