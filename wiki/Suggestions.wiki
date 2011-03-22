@@ -31,6 +31,10 @@ extra physics needed.
 
 ==== float in water, sink when crouched ====
 
+==== coordinates saving ====
+
+press a button on screen to save your current coordinates to a .txt file for finding things you've found later.
+
 ==== mobs## ====
 
 ==== terrain generation### ====
