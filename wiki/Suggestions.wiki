@@ -31,6 +31,10 @@ extra physics needed.
 
 ==== float in water, sink when crouched ====
 
+==== teleport to X Y Z coordinates ====
+
+Ability to teleport to specific X Y Z coordinates.
+
 ==== coordinates saving ====
 
 press a button on screen to save your current coordinates to a .txt file for finding things you've found later.
