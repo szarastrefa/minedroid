@@ -133,6 +133,8 @@ public class BlockFactory
 						b.blockItemShape.state = state;
 					}
 				}
+
+				resource.bitmap.recycle();
 			}
 		} );
 	}
