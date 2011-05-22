@@ -17,7 +17,11 @@ That's it. If there's some problem with loading the level.dat in the save direct
 
 *note*   
 
-The starting position of the camera is taken from the level.dat file and the nether is not supported, so make sure you save your game in the over-world before you copy the save across
+The starting position of the camera is taken from the level.dat file and the nether is not supported, so make sure you save your game in the over-world before you copy the save across.
+
+*note 2!*
+
+If you can not see anything or you are underground please make sure to open your save in minecraft single player and save it, then use that file. (there is sometimes a bug where multi player positions are saved badly and cause a glitch).
 
 = how to play =
 
