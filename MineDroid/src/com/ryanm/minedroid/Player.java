@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid;
 
 import android.util.FloatMath;
@@ -90,23 +89,25 @@ public class Player
 	public Vector3f velocity = new Vector3f();
 
 	// handy data structures for collision detection
-	private Vector3f collideCorrection = new Vector3f();
+	private final Vector3f collideCorrection = new Vector3f();
 
 	/**
 	 * Bounding box of the player
 	 */
 	public BoundingCuboid playerBounds = new BoundingCuboid( 0, 0, 0, 0, 0, 0 );
 
-	private BoundingCuboid blockBounds = new BoundingCuboid( 0, 0, 0, 0, 0, 0 );
+	private final BoundingCuboid blockBounds = new BoundingCuboid( 0, 0, 0, 0,
+			0, 0 );
 
-	private BoundingCuboid intersection = new BoundingCuboid( 0, 0, 0, 0, 0, 0 );
+	private final BoundingCuboid intersection = new BoundingCuboid( 0, 0, 0, 0,
+			0, 0 );
 
-	private Vector3f forward = new Vector3f();
+	private final Vector3f forward = new Vector3f();
 
 	/**
 	 * Items in hotbar
 	 */
-	public Item[] hotbar = new Item[ 9 ];
+	public Item[] hotbar = new Item[9];
 
 	/**
 	 * Item in hand
@@ -114,35 +115,28 @@ public class Player
 	public Item inHand = null;
 
 	/***/
-	public TapPad.Listener jumpCrouchListener = new TapPad.Listener() {
+	public TapPad.Listener jumpCrouchListener = new TapPad.Listener(){
 		@Override
-		public void onTap( TapPad pad )
+		public void onTap( final TapPad pad )
 		{
 			if( crouched )
-			{
 				crouched = false;
-			}
 			else if( onGround )
-			{
 				velocity.y = jumpSpeed;
-			}
 		}
 
 		@Override
-		public void onFlick( TapPad pad, int horizontal, int vertical )
+		public void onFlick( final TapPad pad, final int horizontal,
+				final int vertical )
 		{
 			if( vertical == 1 )
-			{
 				onTap( pad );
-			}
 			else if( vertical == -1 )
-			{
 				crouched = true;
-			}
 		}
 
 		@Override
-		public void onLongPress( TapPad pad )
+		public void onLongPress( final TapPad pad )
 		{
 			crouched = true;
 		}
@@ -151,7 +145,7 @@ public class Player
 	/**
 	 * @param world
 	 */
-	public Player( World world )
+	public Player( final World world )
 	{
 		this.world = world;
 		resetLocation();
@@ -171,11 +165,11 @@ public class Player
 	 * @param cam
 	 * @param gui
 	 */
-	public void advance( float delta, FPSCamera cam, GUI gui )
+	public void advance( final float delta, final FPSCamera cam, final GUI gui )
 	{
 		forward.set( cam.forward );
 
-		float s = crouched ? crouchedSpeed : speed;
+		final float s = crouched ? crouchedSpeed : speed;
 
 		if( ghost )
 		{
@@ -190,86 +184,76 @@ public class Player
 
 			velocity.y = 0;
 		}
-		else
+		else // make sure the chunk we're in is loaded first
+		if( world.getChunklet( position.x, position.y, position.z ) != null )
 		{
-			// make sure the chunk we're in is loaded first
-			if( world.getChunklet( position.x, position.y, position.z ) != null )
-			{
-				// we still walk forward at top speed, even if we're
-				// looking
-				// at the floor
-				forward.y = 0;
-				forward.normalise();
+			// we still walk forward at top speed, even if we're
+			// looking
+			// at the floor
+			forward.y = 0;
+			forward.normalise();
 
-				position.x += gui.left.y * delta * forward.x * s;
-				position.z += gui.left.y * delta * forward.z * s;
+			position.x += gui.left.y * delta * forward.x * s;
+			position.z += gui.left.y * delta * forward.z * s;
 
-				position.x += -gui.left.x * delta * cam.right.x * s;
-				position.z += -gui.left.x * delta * cam.right.z * s;
+			position.x += -gui.left.x * delta * cam.right.x * s;
+			position.z += -gui.left.x * delta * cam.right.z * s;
 
-				// gravity
-				velocity.y += gravity * delta;
-				position.y += velocity.y * delta;
+			// gravity
+			velocity.y += gravity * delta;
+			position.y += velocity.y * delta;
 
-				// world collide
-				float w = width / 2;
-				float feet = height * ( crouched ? crouchedEyeLevel : eyeLevel );
-				float head = height - feet;
-				playerBounds.set( position.x - w, position.y - feet, position.z - w,
-						position.x + w, position.y + head, position.z + w );
+			// world collide
+			final float w = width / 2;
+			final float feet = height * ( crouched ? crouchedEyeLevel : eyeLevel );
+			final float head = height - feet;
+			playerBounds.set( position.x - w, position.y - feet, position.z - w,
+					position.x + w, position.y + head, position.z + w );
 
-				boolean groundHit = false;
+			boolean groundHit = false;
 
-				for( float x = FloatMath.floor( playerBounds.x.getMin() ); x < playerBounds.x
-						.getMax(); x++ )
-				{
-					for( float z = FloatMath.floor( playerBounds.z.getMin() ); z < playerBounds.z
-							.getMax(); z++ )
+			for( float x = FloatMath.floor( playerBounds.x.getMin() ); x < playerBounds.x
+					.getMax(); x++ )
+				for( float z = FloatMath.floor( playerBounds.z.getMin() ); z < playerBounds.z
+						.getMax(); z++ )
+					for( float y = FloatMath.floor( playerBounds.y.getMin() ); y < playerBounds.y
+							.getMax(); y++ )
 					{
-						for( float y = FloatMath.floor( playerBounds.y.getMin() ); y < playerBounds.y
-								.getMax(); y++ )
-						{
-							collideCorrection.set( 0, 0, 0 );
+						collideCorrection.set( 0, 0, 0 );
 
-							collide( x, y, z, playerBounds, collideCorrection );
+						collide( x, y, z, collideCorrection );
 
-							playerBounds.translate( collideCorrection.x, collideCorrection.y,
-									collideCorrection.z );
-							Vector3f.add( position, collideCorrection, position );
+						playerBounds.translate( collideCorrection.x,
+								collideCorrection.y, collideCorrection.z );
+						Vector3f.add( position, collideCorrection, position );
 
-							if( collideCorrection.y != 0
-									&& Math.signum( collideCorrection.y ) != Math
-											.signum( velocity.y ) )
-							{ // hit the ground or roof
-								velocity.y = 0;
-							}
+						if( collideCorrection.y != 0
+								&& Math.signum( collideCorrection.y ) != Math
+										.signum( velocity.y ) )
+							velocity.y = 0;
 
-							groundHit |= collideCorrection.y > 0;
-						}
+						groundHit |= collideCorrection.y > 0;
 					}
-				}
 
-				onGround = groundHit;
-			}
+			onGround = groundHit;
 		}
 
 		position.y = Range.limit( position.y, 1, 127 );
 	}
 
 	/**
-	 * Collides a point against the world's blocks, computes the
-	 * smallest correction to rectify any collision
+	 * Collides a point against the world's blocks, computes the smallest
+	 * correction to rectify any collision
 	 * 
 	 * @param x
 	 * @param y
 	 * @param z
 	 * @param correction
 	 */
-	private void collide( float x, float y, float z, BoundingCuboid player,
-			Vector3f correction )
+	private void collide( float x, float y, float z, final Vector3f correction )
 	{
-		byte bt = world.blockType( x, y, z );
-		Block b = BlockFactory.getBlock( bt );
+		final byte bt = world.blockType( x, y, z );
+		final Block b = BlockFactory.getBlock( bt );
 
 		if( !( b == null || b == Block.Water || b == Block.StillWater ) )
 		{
@@ -279,31 +263,28 @@ public class Player
 			blockBounds.set( x, y, z, x + 1, y + 1, z + 1 );
 
 			if( b == Block.Slab )
-			{
 				blockBounds.y.set( y, y + 0.5f );
-			}
 
 			if( playerBounds.intersection( blockBounds, intersection ) )
-			{
 				correction( intersection, collideCorrection );
-			}
 		}
 	}
 
 	/**
-	 * Calculates the minimum correction vector to move the point out
-	 * of the unit cube
+	 * Calculates the minimum correction vector to move the point out of the unit
+	 * cube
 	 * 
 	 * @param intersection
 	 * @param correction
 	 */
-	private void correction( BoundingCuboid intersection, Vector3f correction )
+	private void correction( final BoundingCuboid intersection,
+			final Vector3f correction )
 	{
-		float mx = intersection.x.getSpan();
-		float my = intersection.y.getSpan();
-		float mz = intersection.z.getSpan();
+		final float mx = intersection.x.getSpan();
+		final float my = intersection.y.getSpan();
+		final float mz = intersection.z.getSpan();
 
-		float midpoint = playerBounds.y.toValue( 0.5f );
+		final float midpoint = playerBounds.y.toValue( 0.5f );
 
 		if( my < 0.51f && intersection.y.toValue( 0.5f ) < midpoint )
 		{
@@ -313,16 +294,13 @@ public class Player
 			correction.y *= 0.3f;
 		}
 		else if( mx < my && mx < mz )
-		{
-			correction.set( intersection.x.toValue( 0.5f ) < position.x ? mx : -mx, 0, 0 );
-		}
+			correction.set(
+					intersection.x.toValue( 0.5f ) < position.x ? mx : -mx, 0, 0 );
 		else if( my < mz )
-		{
-			correction.set( 0, intersection.y.toValue( 0.5f ) < midpoint ? my : -my, 0 );
-		}
+			correction.set( 0, intersection.y.toValue( 0.5f ) < midpoint ? my
+					: -my, 0 );
 		else
-		{
-			correction.set( 0, 0, intersection.z.toValue( 0.5f ) < position.z ? mz : -mz );
-		}
+			correction.set( 0, 0, intersection.z.toValue( 0.5f ) < position.z ? mz
+					: -mz );
 	}
 }

@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid.chunk;
 
 import java.io.DataInputStream;
@@ -11,8 +10,8 @@ import com.ryanm.minedroid.World;
 import com.ryanm.minedroid.nbt.RegionFileCache;
 
 /**
- * This is packaged up like this so it can happen on the resource
- * loading thread, rather than the main render thread
+ * This is packaged up like this so it can happen on the resource loading
+ * thread, rather than the main render thread
  * 
  * @author ryanm
  */
@@ -42,14 +41,14 @@ public abstract class ChunkLoader extends Loader<Chunk>
 
 		try
 		{
-			DataInputStream is = RegionFileCache.getChunkDataInputStream( world.dir, x, z );
+			DataInputStream is =
+					RegionFileCache.getChunkDataInputStream( world.dir, x, z );
 
 			resource = new Chunk( world, is );
 
 			if( resource.chunkX != x || resource.chunkZ != z )
-			{
-				Log.e( Game.RUGL_TAG, "expected " + toString() + ", got " + resource );
-			}
+				Log.e( Game.RUGL_TAG, "expected " + toString() + ", got "
+						+ resource );
 		}
 		catch( Exception e )
 		{

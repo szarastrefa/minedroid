@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid.chunk;
 
 import java.io.IOException;
@@ -65,11 +64,9 @@ public class Chunk
 		skylight = ( byte[] ) ct.findTagByName( "SkyLight" ).getValue();
 		blocklight = ( byte[] ) ct.findTagByName( "BlockLight" ).getValue();
 
-		chunklets = new Chunklet[ 8 ];
+		chunklets = new Chunklet[8];
 		for( int i = 0; i < chunklets.length; i++ )
-		{
 			chunklets[ i ] = new Chunklet( this, i );
-		}
 	}
 
 	/**
@@ -105,9 +102,7 @@ public class Chunk
 			return west == null ? 0 : west.blockType( bx, by, bz - 16 );
 		}
 		else if( by < 0 || by >= 128 )
-		{
 			return 0;
-		}
 
 		return blockData[ by + bz * 128 + bx * 2048 ];
 	}
@@ -119,38 +114,28 @@ public class Chunk
 		{
 			Chunk north = world.getChunk( chunkX - 1, chunkZ );
 			if( north != null )
-			{
 				north.setBlockType( bx + 16, by, bz, blockType );
-			}
 		}
 		else if( bx >= 16 )
 		{
 			Chunk south = world.getChunk( chunkX + 1, chunkZ );
 			if( south != null )
-			{
 				south.setBlockType( bx - 16, by, bz, blockType );
-			}
 		}
 		else if( bz < 0 )
 		{
 			Chunk east = world.getChunk( chunkX, chunkZ - 1 );
 			if( east != null )
-			{
 				east.setBlockType( bx, by, bz + 16, blockType );
-			}
 		}
 		else if( bz >= 16 )
 		{
 			Chunk west = world.getChunk( chunkX, chunkZ + 1 );
 			if( west != null )
-			{
 				west.setBlockType( bx, by, bz - 16, blockType );
-			}
 		}
 		else if( by < 0 || by >= 128 )
-		{
 			return;
-		}
 		else
 		{
 			final int index = by + bz * 128 + bx * 2048;
@@ -161,26 +146,37 @@ public class Chunk
 			{
 				// removed a block, lighting propagation needed
 				byte ol =
-						( byte ) Math.max( skyLight( bx, by, bz ), blockLight( bx, by, bz ) );
+						( byte ) Math.max( skyLight( bx, by, bz ),
+								blockLight( bx, by, bz ) );
 
 				byte nl =
 						( byte ) Math.max( skyLight( bx + 1, by, bz ),
 								blockLight( bx + 1, by, bz ) );
 				nl =
-						( byte ) Math.max( nl, Math.max( skyLight( bx, by + 1, bz ),
-								blockLight( bx, by + 1, bz ) ) );
+						( byte ) Math.max(
+								nl,
+								Math.max( skyLight( bx, by + 1, bz ),
+										blockLight( bx, by + 1, bz ) ) );
 				nl =
-						( byte ) Math.max( nl, Math.max( skyLight( bx, by, bz + 1 ),
-								blockLight( bx, by, bz + 1 ) ) );
+						( byte ) Math.max(
+								nl,
+								Math.max( skyLight( bx, by, bz + 1 ),
+										blockLight( bx, by, bz + 1 ) ) );
 				nl =
-						( byte ) Math.max( nl, Math.max( skyLight( bx - 1, by, bz ),
-								blockLight( bx - 1, by, bz ) ) );
+						( byte ) Math.max(
+								nl,
+								Math.max( skyLight( bx - 1, by, bz ),
+										blockLight( bx - 1, by, bz ) ) );
 				nl =
-						( byte ) Math.max( nl, Math.max( skyLight( bx, by - 1, bz ),
-								blockLight( bx, by - 1, bz ) ) );
+						( byte ) Math.max(
+								nl,
+								Math.max( skyLight( bx, by - 1, bz ),
+										blockLight( bx, by - 1, bz ) ) );
 				nl =
-						( byte ) Math.max( nl, Math.max( skyLight( bx, by, bz - 1 ),
-								blockLight( bx, by, bz - 1 ) ) );
+						( byte ) Math.max(
+								nl,
+								Math.max( skyLight( bx, by, bz - 1 ),
+										blockLight( bx, by, bz - 1 ) ) );
 
 				nl--;
 				if( nl > ol )
@@ -256,8 +252,8 @@ public class Chunk
 	 */
 	public byte blockTypeForPosition( float x, float y, float z )
 	{
-		return blockType( ( int ) Math.floor( x - chunkX * 16 ), ( int ) Math.floor( y ),
-				( int ) Math.floor( z - chunkZ * 16 ) );
+		return blockType( ( int ) Math.floor( x - chunkX * 16 ),
+				( int ) Math.floor( y ), ( int ) Math.floor( z - chunkZ * 16 ) );
 	}
 
 	/**
@@ -266,18 +262,19 @@ public class Chunk
 	 * @param z
 	 * @param blockType
 	 */
-	public void setBlockTypeForPosition( float x, float y, float z, byte blockType )
+	public void setBlockTypeForPosition( float x, float y, float z,
+			byte blockType )
 	{
-		setBlockType( ( int ) Math.floor( x - chunkX * 16 ), ( int ) Math.floor( y ),
-				( int ) Math.floor( z - chunkZ * 16 ), blockType );
+		setBlockType( ( int ) Math.floor( x - chunkX * 16 ),
+				( int ) Math.floor( y ), ( int ) Math.floor( z - chunkZ * 16 ),
+				blockType );
 	}
 
 	/**
 	 * @param bx
 	 * @param by
 	 * @param bz
-	 * @return The light contribution from torches, lava etc, in range
-	 *         0-15
+	 * @return The light contribution from torches, lava etc, in range 0-15
 	 */
 	public int blockLight( int bx, int by, int bz )
 	{
@@ -302,21 +299,15 @@ public class Chunk
 			return west == null ? 0 : west.blockLight( bx, by, bz - 16 );
 		}
 		else if( by < 0 || by >= 128 )
-		{
 			return 0;
-		}
 
 		int index = by + bz * 128 + bx * 2048;
 		int hi = index / 2;
 		boolean odd = ( index & 1 ) != 0;
 		if( odd )
-		{
 			return ( blocklight[ hi ] & 0xf0 ) >> 4;
-		}
 		else
-		{
 			return blocklight[ hi ] & 0xf;
-		}
 	}
 
 	/**
@@ -348,22 +339,16 @@ public class Chunk
 			return west == null ? 0 : west.skyLight( bx, by, bz - 16 );
 		}
 		else if( by < 0 || by >= 128 )
-		{
 			return 0;
-		}
 
 		int index = by + bz * 128 + bx * 2048;
 		int hi = index / 2;
 		boolean odd = ( index & 1 ) != 0;
 
 		if( odd )
-		{
 			return ( skylight[ hi ] & 0xf0 ) >> 4;
-		}
 		else
-		{
 			return skylight[ hi ] & 0xf;
-		}
 	}
 
 	/**
@@ -372,9 +357,7 @@ public class Chunk
 	public void geomDirty()
 	{
 		for( int i = 0; i < chunklets.length; i++ )
-		{
 			chunklets[ i ].geomDirty();
-		}
 	}
 
 	/**
@@ -383,9 +366,7 @@ public class Chunk
 	public void unload()
 	{
 		for( int i = 0; i < chunklets.length; i++ )
-		{
 			chunklets[ i ].unload();
-		}
 	}
 
 	@Override

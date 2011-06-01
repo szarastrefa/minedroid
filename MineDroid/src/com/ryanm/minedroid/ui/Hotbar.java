@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid.ui;
 
 import java.util.Arrays;
@@ -52,9 +51,9 @@ public class Hotbar implements TouchListener
 	@Summary( "Zoom duration in seconds" )
 	public float zoomTime = 0.15f;
 
-	private float[] currentZooms = new float[ 9 ];
+	private float[] currentZooms = new float[9];
 
-	private float[] targetZooms = new float[ 9 ];
+	private float[] targetZooms = new float[9];
 
 	private Pointer touch;
 
@@ -100,13 +99,9 @@ public class Hotbar implements TouchListener
 		for( int i = 0; i < currentZooms.length; i++ )
 		{
 			if( currentZooms[ i ] < targetZooms[ i ] )
-			{
 				currentZooms[ i ] += delta / zoomTime;
-			}
 			else if( currentZooms[ i ] > targetZooms[ i ] )
-			{
 				currentZooms[ i ] -= delta / zoomTime;
-			}
 
 			currentZooms[ i ] = Range.limit( currentZooms[ i ], 0, 1 );
 		}
@@ -131,13 +126,11 @@ public class Hotbar implements TouchListener
 		float size = Math.min( bounds.y.getSpan() - 10, off );
 
 		for( int i = 0; i < player.hotbar.length; i++ )
-		{
 			if( player.hotbar[ i ] != null )
 			{
 				sr.pushMatrix();
-				sr.translate(
-						bounds.x.getMin() + 5 + off / 2 + i * off,
-						Range.toValue( currentZooms[ i ], bounds.y.toValue( 0.5f ),
+				sr.translate( bounds.x.getMin() + 5 + off / 2 + i * off, Range
+						.toValue( currentZooms[ i ], bounds.y.toValue( 0.5f ),
 								bounds.y.toValue( 1.5f ) ), 0 );
 
 				float zoom = Range.smooth( currentZooms[ i ], 1, maxZoom );
@@ -148,7 +141,6 @@ public class Hotbar implements TouchListener
 
 				sr.popMatrix();
 			}
-		}
 	}
 
 	/***/

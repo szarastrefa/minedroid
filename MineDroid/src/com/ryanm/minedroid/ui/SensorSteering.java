@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid.ui;
 
 import android.hardware.Sensor;
@@ -28,9 +27,9 @@ public class SensorSteering
 
 	private float[] gravityReadings;
 
-	private float[] rotMatrix = new float[ 16 ];
+	private float[] rotMatrix = new float[16];
 
-	private float[] orientation = new float[ 3 ];
+	private float[] orientation = new float[3];
 
 	private float azimuth;
 
@@ -38,14 +37,14 @@ public class SensorSteering
 
 	private SensorManager sm;
 
-	private final LowPassFilter[] vectorFilters = new LowPassFilter[ 3 ];
+	private final LowPassFilter[] vectorFilters = new LowPassFilter[3];
 
 	/***/
 	@Variable( "Filter alpha" )
 	@Summary( "Controls the smoothing/latency of the filter, in range 0-1" )
 	public float filterAlpha = 0.1f;
 
-	private SensorEventListener compass = new SensorEventListener() {
+	private SensorEventListener compass = new SensorEventListener(){
 
 		@Override
 		public void onSensorChanged( SensorEvent event )
@@ -60,7 +59,7 @@ public class SensorSteering
 		}
 	};
 
-	private SensorEventListener gravity = new SensorEventListener() {
+	private SensorEventListener gravity = new SensorEventListener(){
 
 		@Override
 		public void onSensorChanged( SensorEvent event )
@@ -83,9 +82,7 @@ public class SensorSteering
 		this.sm = sm;
 
 		for( int i = 0; i < vectorFilters.length; i++ )
-		{
 			vectorFilters[ i ] = new LowPassFilter( 30 );
-		}
 	}
 
 	/**
@@ -99,10 +96,12 @@ public class SensorSteering
 		if( enabled )
 		{
 			Sensor c = sm.getDefaultSensor( Sensor.TYPE_MAGNETIC_FIELD );
-			enabled &= sm.registerListener( compass, c, SensorManager.SENSOR_DELAY_GAME );
+			enabled &=
+					sm.registerListener( compass, c, SensorManager.SENSOR_DELAY_GAME );
 
 			Sensor a = sm.getDefaultSensor( Sensor.TYPE_ACCELEROMETER );
-			enabled &= sm.registerListener( gravity, a, SensorManager.SENSOR_DELAY_GAME );
+			enabled &=
+					sm.registerListener( gravity, a, SensorManager.SENSOR_DELAY_GAME );
 		}
 		else
 		{
@@ -112,8 +111,7 @@ public class SensorSteering
 	}
 
 	/**
-	 * @return <code>true</code> if we are currently using sensor-based
-	 *         steering
+	 * @return <code>true</code> if we are currently using sensor-based steering
 	 */
 	@Variable( "Enabled" )
 	public boolean isEnabled()
@@ -164,9 +162,7 @@ public class SensorSteering
 	public void setFilterLength( int samples )
 	{
 		for( int i = 0; i < vectorFilters.length; i++ )
-		{
 			vectorFilters[ i ] = new LowPassFilter( samples );
-		}
 	}
 
 	/**

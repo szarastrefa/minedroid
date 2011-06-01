@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid.ui;
 
 import android.util.FloatMath;
@@ -61,14 +60,12 @@ public class Interaction implements TouchListener
 	private boolean targetValid = false;
 
 	/**
-	 * The coordinates of first solid block encountered in the
-	 * actionDirection
+	 * The coordinates of first solid block encountered in the actionDirection
 	 */
 	private Vector3i targetBlock = new Vector3i();
 
 	/**
-	 * The coordinates of the empty block we encountered just before
-	 * the target
+	 * The coordinates of the empty block we encountered just before the target
 	 */
 	private Vector3i placementTargetBlock = new Vector3i();
 
@@ -126,9 +123,7 @@ public class Interaction implements TouchListener
 			float ds = FloatMath.sqrt( dx * dx + dy * dy + dz * dz );
 
 			if( ds > range + 1 )
-			{ // moved out of range!
 				targettedBreaking = null;
-			}
 			else
 			{
 				Item i = activeItem();
@@ -140,7 +135,8 @@ public class Interaction implements TouchListener
 				if( breakingProgress > 1 )
 				{ // broken!
 					Chunk chunk =
-							world.getChunklet( targetBlock.x, targetBlock.y, targetBlock.z ).parent;
+							world.getChunklet( targetBlock.x, targetBlock.y,
+									targetBlock.z ).parent;
 					chunk.setBlockTypeForPosition( targetBlock.x, targetBlock.y,
 							targetBlock.z, ( byte ) 0 );
 
@@ -160,14 +156,13 @@ public class Interaction implements TouchListener
 			constantStriking = false;
 
 			if( sweptItem == null )
-			{
 				hand.repeatedStrike( false );
-			}
 
 			held( touch.x, touch.y, delta );
 
 			world.setBlockPlacePreview( targetValid && activeItem().block != null,
-					placementTargetBlock.x, placementTargetBlock.y, placementTargetBlock.z );
+					placementTargetBlock.x, placementTargetBlock.y,
+					placementTargetBlock.z );
 		}
 	}
 
@@ -212,9 +207,7 @@ public class Interaction implements TouchListener
 			touch = null;
 
 			if( !justBroken )
-			{
 				action( activeItem(), p.x, p.y );
-			}
 
 			sweptItem = null;
 			justBroken = false;
@@ -230,8 +223,7 @@ public class Interaction implements TouchListener
 	}
 
 	/**
-	 * Called when the touchsticks are tapped, and when the screen is
-	 * released.
+	 * Called when the touchsticks are tapped, and when the screen is released.
 	 * 
 	 * @param item
 	 * @param x
@@ -242,16 +234,13 @@ public class Interaction implements TouchListener
 	public void action( Item item, float x, float y )
 	{
 		if( item == null )
-		{
 			return;
-		}
 
 		Chunk chunk = updateTarget( x, y );
 
 		hand.strike( false );
 
 		if( chunk != null && targetValid )
-		{
 			if( item.block != null )
 			{ // place
 				blockBounds.set( placementTargetBlock.x, placementTargetBlock.y,
@@ -262,14 +251,15 @@ public class Interaction implements TouchListener
 				{
 					hand.strike( true );
 					chunk.setBlockTypeForPosition( placementTargetBlock.x,
-							placementTargetBlock.y, placementTargetBlock.z, item.block.id );
+							placementTargetBlock.y, placementTargetBlock.z,
+							item.block.id );
 				}
 			}
 			else
 			{ // break
 				Block b =
-						BlockFactory.getBlock( chunk.blockTypeForPosition( targetBlock.x,
-								targetBlock.y, targetBlock.z ) );
+						BlockFactory.getBlock( chunk.blockTypeForPosition(
+								targetBlock.x, targetBlock.y, targetBlock.z ) );
 
 				if( item.isAppropriateTool( b ) )
 				{
@@ -278,7 +268,6 @@ public class Interaction implements TouchListener
 					breakingLocation.set( targetBlock );
 				}
 			}
-		}
 	}
 
 	private void held( float x, float y, float delta )
@@ -288,8 +277,8 @@ public class Interaction implements TouchListener
 		if( chunk != null && sweptItem == null )
 		{
 			Block b =
-					BlockFactory.getBlock( chunk.blockTypeForPosition( targetBlock.x,
-							targetBlock.y, targetBlock.z ) );
+					BlockFactory.getBlock( chunk.blockTypeForPosition(
+							targetBlock.x, targetBlock.y, targetBlock.z ) );
 
 			// screen-hold breaking
 			if( breakingLocation.equals( targetBlock ) )
@@ -339,9 +328,10 @@ public class Interaction implements TouchListener
 
 		// find target block
 		actionDirection.scale( range );
-		gridIterate.setSeg( player.position.x, player.position.y, player.position.z,
-				player.position.x + actionDirection.x, player.position.y + actionDirection.y,
-				player.position.z + actionDirection.z );
+		gridIterate.setSeg( player.position.x, player.position.y,
+				player.position.z, player.position.x + actionDirection.x,
+				player.position.y + actionDirection.y, player.position.z
+						+ actionDirection.z );
 
 		targetBlock.set( gridIterate.lastGridCoords );
 		placementTargetBlock.set( gridIterate.lastGridCoords );
@@ -357,8 +347,10 @@ public class Interaction implements TouchListener
 			if( chunk != null )
 			{
 				byte bt =
-						chunk.parent.blockTypeForPosition( gridIterate.lastGridCoords.x,
-								gridIterate.lastGridCoords.y, gridIterate.lastGridCoords.z );
+						chunk.parent.blockTypeForPosition(
+								gridIterate.lastGridCoords.x,
+								gridIterate.lastGridCoords.y,
+								gridIterate.lastGridCoords.z );
 
 				if( bt == 0 || bt == Block.Water.id || bt == Block.StillWater.id
 						|| BlockFactory.getBlock( bt ) == null )
@@ -375,9 +367,7 @@ public class Interaction implements TouchListener
 				}
 			}
 			else
-			{
 				targetValid = false;
-			}
 		}
 		while( !targetValid && !gridIterate.isDone() );
 
