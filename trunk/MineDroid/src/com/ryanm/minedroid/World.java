@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid;
 
 import java.io.File;
@@ -50,7 +49,7 @@ public class World
 	/**
 	 * For drawing the wireframes
 	 */
-	private StackedRenderer renderer = new StackedRenderer();
+	private final StackedRenderer renderer = new StackedRenderer();
 
 	/**
 	 * The world save directory
@@ -63,16 +62,17 @@ public class World
 	 * 1st index = x, 2nd = z
 	 */
 	private Chunk[][] chunks =
-			new Chunk[ 2 * getLoadRadius() + 1 ][ 2 * getLoadRadius() + 1 ];
+			new Chunk[2 * getLoadRadius() + 1][2 * getLoadRadius() + 1];
 
 	/**
 	 * Coordinates of the currently-occupied chunk
 	 */
 	private int chunkPosX, chunkPosZ;
 
-	private Queue<Chunklet> floodQueue = new ArrayBlockingQueue<Chunklet>( 50 );
+	private final Queue<Chunklet> floodQueue = new ArrayBlockingQueue<Chunklet>(
+			50 );
 
-	private Chunklet[] renderList = new Chunklet[ 64 ];
+	private Chunklet[] renderList = new Chunklet[64];
 
 	private int renderListSize = 0;
 
@@ -92,15 +92,15 @@ public class World
 
 	private boolean blockPreview = false;
 
-	private Vector3i blockPreviewLocation = new Vector3i();
+	private final Vector3i blockPreviewLocation = new Vector3i();
 
-	private ColouredShape blockPreviewShape;
+	private final ColouredShape blockPreviewShape;
 
 	/**
 	 * @param dir
 	 * @param startPosition
 	 */
-	public World( File dir, Vector3f startPosition )
+	public World( final File dir, final Vector3f startPosition )
 	{
 		this.dir = dir;
 		this.startPosition = startPosition;
@@ -108,16 +108,17 @@ public class World
 		chunkPosX = ( int ) Math.floor( startPosition.getX() / 16.0f );
 		chunkPosZ = ( int ) Math.floor( startPosition.getZ() / 16.0f );
 
-		Game.addSurfaceLIstener( new Game.SurfaceListener() {
+		Game.addSurfaceLIstener( new Game.SurfaceListener(){
 			@Override
 			public void onSurfaceCreated()
 			{
 				setLoadRadius( loadradius );
-			};
+			}
 		} );
 
 		blockPreviewShape =
-				new ColouredShape( WireUtil.unitCube(), Colour.black, WireUtil.state );
+				new ColouredShape( WireUtil.unitCube(), Colour.black,
+						WireUtil.state );
 	}
 
 	/**
@@ -126,7 +127,8 @@ public class World
 	 * @param y
 	 * @param z
 	 */
-	public void setBlockPlacePreview( boolean active, int x, int y, int z )
+	public void setBlockPlacePreview( final boolean active, final int x,
+			final int y, final int z )
 	{
 		blockPreview = active;
 		blockPreviewLocation.set( x, y, z );
@@ -140,11 +142,11 @@ public class World
 	 * @param posZ
 	 *           player position
 	 */
-	public void advance( float posX, float posZ )
+	public void advance( final float posX, final float posZ )
 	{
 		boolean chunksDirty = false;
 
-		int cx = ( int ) Math.floor( posX / 16 );
+		final int cx = ( int ) Math.floor( posX / 16 );
 		if( cx < chunkPosX )
 		{
 			shiftUpX();
@@ -158,7 +160,7 @@ public class World
 			chunksDirty = true;
 		}
 
-		int cz = ( int ) Math.floor( posZ / 16 );
+		final int cz = ( int ) Math.floor( posZ / 16 );
 		if( cz < chunkPosZ )
 		{
 			shiftUpZ();
@@ -183,21 +185,17 @@ public class World
 	private void shiftDownX()
 	{
 		// free bottom x
-		Chunk[] swap = chunks[ 0 ];
+		final Chunk[] swap = chunks[ 0 ];
 		for( int i = 0; i < swap.length; i++ )
-		{
 			if( swap[ i ] != null )
 			{
 				swap[ i ].unload();
 				swap[ i ] = null;
 			}
-		}
 
 		// shift down
 		for( int i = 0; i < chunks.length - 1; i++ )
-		{
 			chunks[ i ] = chunks[ i + 1 ];
-		}
 
 		// add swap
 		chunks[ chunks.length - 1 ] = swap;
@@ -206,21 +204,17 @@ public class World
 	private void shiftUpX()
 	{
 		// free top x
-		Chunk[] swap = chunks[ chunks.length - 1 ];
+		final Chunk[] swap = chunks[ chunks.length - 1 ];
 		for( int i = 0; i < swap.length; i++ )
-		{
 			if( swap[ i ] != null )
 			{
 				swap[ i ].unload();
 				swap[ i ] = null;
 			}
-		}
 
 		// shift up
 		for( int i = chunks.length - 1; i > 0; i-- )
-		{
 			chunks[ i ] = chunks[ i - 1 ];
-		}
 
 		// add swap
 		chunks[ 0 ] = swap;
@@ -231,14 +225,10 @@ public class World
 		for( int i = 0; i < chunks.length; i++ )
 		{
 			if( chunks[ i ][ 0 ] != null )
-			{
 				chunks[ i ][ 0 ].unload();
-			}
 
 			for( int j = 0; j < chunks[ i ].length - 1; j++ )
-			{
 				chunks[ i ][ j ] = chunks[ i ][ j + 1 ];
-			}
 
 			chunks[ i ][ chunks[ i ].length - 1 ] = null;
 		}
@@ -249,14 +239,10 @@ public class World
 		for( int i = 0; i < chunks.length; i++ )
 		{
 			if( chunks[ i ][ chunks[ i ].length - 1 ] != null )
-			{
 				chunks[ i ][ chunks[ i ].length - 1 ].unload();
-			}
 
 			for( int j = chunks[ i ].length - 1; j > 0; j-- )
-			{
 				chunks[ i ][ j ] = chunks[ i ][ j - 1 ];
-			}
 
 			chunks[ i ][ 0 ] = null;
 		}
@@ -266,12 +252,10 @@ public class World
 	 * @param eye
 	 * @param frustum
 	 */
-	public void draw( Vector3f eye, Frustum frustum )
+	public void draw( final Vector3f eye, final Frustum frustum )
 	{
 		if( muState == null )
-		{
 			muState = new MutableState( BlockFactory.state );
-		}
 
 		if( muState.dirty )
 		{ // the rendering state has been changed by configuration
@@ -283,7 +267,7 @@ public class World
 
 		if( c != null )
 		{
-			Chunklet origin = c;
+			final Chunklet origin = c;
 			c.drawFlag = drawFlag;
 			floodQueue.offer( c );
 
@@ -295,7 +279,7 @@ public class World
 
 				if( renderListSize >= renderList.length )
 				{ // grow
-					Chunklet[] nrl = new Chunklet[ renderList.length * 2 ];
+					final Chunklet[] nrl = new Chunklet[renderList.length * 2];
 					System.arraycopy( renderList, 0, nrl, 0, renderList.length );
 					renderList = nrl;
 				}
@@ -305,7 +289,7 @@ public class World
 				// we are not reversing flood direction and we can see
 				// through that face of this chunk
 				{
-					Chunklet north = getChunklet( c.x - 16, c.y, c.z );
+					final Chunklet north = getChunklet( c.x - 16, c.y, c.z );
 					if( north != null
 					// neighbouring chunk exists
 							&& !north.southSheet
@@ -321,8 +305,9 @@ public class World
 				}
 				if( c.x >= origin.x && !c.southSheet )
 				{
-					Chunklet south = getChunklet( c.x + 16, c.y, c.z );
-					if( south != null && !south.northSheet && south.drawFlag != drawFlag
+					final Chunklet south = getChunklet( c.x + 16, c.y, c.z );
+					if( south != null && !south.northSheet
+							&& south.drawFlag != drawFlag
 							&& south.intersection( frustum ) != Result.Miss )
 					{
 						south.drawFlag = drawFlag;
@@ -331,7 +316,7 @@ public class World
 				}
 				if( c.z <= origin.z && !c.eastSheet )
 				{
-					Chunklet east = getChunklet( c.x, c.y, c.z - 16 );
+					final Chunklet east = getChunklet( c.x, c.y, c.z - 16 );
 					if( east != null && !east.westSheet && east.drawFlag != drawFlag
 							&& east.intersection( frustum ) != Result.Miss )
 					{
@@ -341,7 +326,7 @@ public class World
 				}
 				if( c.z >= origin.z && !c.westSheet )
 				{
-					Chunklet west = getChunklet( c.x, c.y, c.z + 16 );
+					final Chunklet west = getChunklet( c.x, c.y, c.z + 16 );
 					if( west != null && !west.eastSheet && west.drawFlag != drawFlag
 							&& west.intersection( frustum ) != Result.Miss )
 					{
@@ -351,8 +336,9 @@ public class World
 				}
 				if( c.y <= origin.y && !c.bottomSheet )
 				{
-					Chunklet bottom = getChunklet( c.x, c.y - 16, c.z );
-					if( bottom != null && !bottom.topSheet && bottom.drawFlag != drawFlag
+					final Chunklet bottom = getChunklet( c.x, c.y - 16, c.z );
+					if( bottom != null && !bottom.topSheet
+							&& bottom.drawFlag != drawFlag
 							&& bottom.intersection( frustum ) != Result.Miss )
 					{
 						bottom.drawFlag = drawFlag;
@@ -361,7 +347,7 @@ public class World
 				}
 				if( c.y >= origin.y && !c.topSheet )
 				{
-					Chunklet top = getChunklet( c.x, c.y + 16, c.z );
+					final Chunklet top = getChunklet( c.x, c.y + 16, c.z );
 					if( top != null && !top.bottomSheet && top.drawFlag != drawFlag
 							&& top.intersection( frustum ) != Result.Miss )
 					{
@@ -386,27 +372,21 @@ public class World
 			renderList[ i ].drawSolid( renderer );
 
 			if( !renderList[ i ].isEmpty() )
-			{
 				renderedChunklets++;
-			}
 		}
 
 		GLUtil.checkGLError();
 
 		// translucent stuff from far to near
 		for( int i = renderListSize - 1; i >= 0; i-- )
-		{
 			renderList[ i ].drawTransparent( renderer );
-		}
 
 		GLUtil.checkGLError();
 
 		if( drawOutlines )
 		{
 			for( int i = 0; i < renderListSize; i++ )
-			{
 				renderList[ i ].drawOutline( renderer );
-			}
 			GLUtil.checkGLError();
 		}
 
@@ -431,7 +411,6 @@ public class World
 	private void fillChunks()
 	{
 		for( int i = 0; i < chunks.length; i++ )
-		{
 			for( int j = 0; j < chunks[ i ].length; j++ )
 			{
 				final int caix = i, caiz = j;
@@ -439,13 +418,14 @@ public class World
 				final int z = chunkPosZ + j - getLoadRadius();
 
 				if( getChunk( x, z ) == null )
-				{
-					ResourceLoader.load( new ChunkLoader( this, x, z ) {
+					ResourceLoader.load( new ChunkLoader( this, x, z ){
 						@Override
 						public void complete()
 						{
-							if( resource != null && Range.inRange( caix, 0, chunks.length - 1 )
-									&& Range.inRange( caiz, 0, chunks[ caix ].length - 1 ) )
+							if( resource != null
+									&& Range.inRange( caix, 0, chunks.length - 1 )
+									&& Range
+											.inRange( caiz, 0, chunks[ caix ].length - 1 ) )
 							{
 								chunks[ caix ][ caiz ] = resource;
 
@@ -453,27 +433,17 @@ public class World
 								// neighbouring chunks
 								Chunk c;
 								if( ( c = getChunk( x - 1, z ) ) != null )
-								{
 									c.geomDirty();
-								}
 								if( ( c = getChunk( x + 1, z ) ) != null )
-								{
 									c.geomDirty();
-								}
 								if( ( c = getChunk( x, z - 1 ) ) != null )
-								{
 									c.geomDirty();
-								}
 								if( ( c = getChunk( x, z + 1 ) ) != null )
-								{
 									c.geomDirty();
-								}
 							}
 						}
 					} );
-				}
 			}
-		}
 	}
 
 	/**
@@ -481,24 +451,20 @@ public class World
 	 * 
 	 * @param x
 	 * @param z
-	 * @return the so-indexed chunk, or <code>null</code> if it does
-	 *         not exist
+	 * @return the so-indexed chunk, or <code>null</code> if it does not exist
 	 */
-	public Chunk getChunk( int x, int z )
+	public Chunk getChunk( final int x, final int z )
 	{
-		int dx = x - chunkPosX;
-		int dz = z - chunkPosZ;
-		int caix = getLoadRadius() + dx;
-		int caiz = getLoadRadius() + dz;
+		final int dx = x - chunkPosX;
+		final int dz = z - chunkPosZ;
+		final int caix = getLoadRadius() + dx;
+		final int caiz = getLoadRadius() + dz;
 
-		if( caix < 0 || caix >= chunks.length || caiz < 0 || caiz >= chunks[ caix ].length )
-		{
+		if( caix < 0 || caix >= chunks.length || caiz < 0
+				|| caiz >= chunks[ caix ].length )
 			return null;
-		}
 		else
-		{
 			return chunks[ caix ][ caiz ];
-		}
 	}
 
 	/**
@@ -507,13 +473,14 @@ public class World
 	 * @param z
 	 * @return The chunklet that contains that point
 	 */
-	public Chunklet getChunklet( float x, float y, float z )
+	public Chunklet getChunklet( final float x, final float y, final float z )
 	{
-		Chunk chunk = getChunk( ( int ) Math.floor( x / 16 ), ( int ) Math.floor( z / 16 ) );
+		final Chunk chunk =
+				getChunk( ( int ) Math.floor( x / 16 ), ( int ) Math.floor( z / 16 ) );
 
 		if( chunk != null && y >= 0 && y < 128 )
 		{
-			int yi = ( int ) Math.floor( y / 16 );
+			final int yi = ( int ) Math.floor( y / 16 );
 
 			return chunk.chunklets[ yi ];
 		}
@@ -525,21 +492,17 @@ public class World
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return The type of the block that contains the point, or 0 if
-	 *         the chunk is not loaded yet
+	 * @return The type of the block that contains the point, or 0 if the chunk
+	 *         is not loaded yet
 	 */
-	public byte blockType( float x, float y, float z )
+	public byte blockType( final float x, final float y, final float z )
 	{
-		Chunklet c = getChunklet( x, y, z );
+		final Chunklet c = getChunklet( x, y, z );
 
 		if( c != null )
-		{
 			return c.parent.blockTypeForPosition( x, y, z );
-		}
 		else
-		{
 			Log.i( Game.RUGL_TAG, "Colliding with null chunklet" );
-		}
 
 		return 0;
 	}
@@ -549,7 +512,7 @@ public class World
 	 */
 	@Variable( "Chunk load range" )
 	@Summary( "The distance (in chunk units) at which to load chunks" )
-	public void setLoadRadius( int chunkRadius )
+	public void setLoadRadius( final int chunkRadius )
 	{
 		loadradius = chunkRadius;
 
@@ -559,16 +522,10 @@ public class World
 		// RELOAD. EVERYTHING.
 
 		for( int i = 0; i < chunks.length; i++ )
-		{
 			for( int j = 0; j < chunks[ i ].length; j++ )
-			{
 				if( chunks[ i ][ j ] != null )
-				{
 					chunks[ i ][ j ].unload();
-				}
-			}
-		}
-		chunks = new Chunk[ 2 * chunkRadius + 1 ][ 2 * chunkRadius + 1 ];
+		chunks = new Chunk[2 * chunkRadius + 1][2 * chunkRadius + 1];
 
 		fillChunks();
 	}
@@ -587,10 +544,10 @@ public class World
 		private final Vector3f eye = new Vector3f();
 
 		@Override
-		public int compare( Chunklet a, Chunklet b )
+		public int compare( final Chunklet a, final Chunklet b )
 		{
-			float ad = a.distanceSq( eye.x, eye.y, eye.z );
-			float bd = b.distanceSq( eye.x, eye.y, eye.z );
+			final float ad = a.distanceSq( eye.x, eye.y, eye.z );
+			final float bd = b.distanceSq( eye.x, eye.y, eye.z );
 			return ( int ) Math.signum( ad - bd );
 		}
 	}

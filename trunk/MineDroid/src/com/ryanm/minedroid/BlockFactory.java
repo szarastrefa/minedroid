@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid;
 
 import com.ryanm.droid.rugl.geom.ColouredShape;
@@ -18,8 +17,8 @@ import com.ryanm.droid.rugl.util.Colour;
 import com.ryanm.droid.rugl.util.Trig;
 
 /**
- * Defines block data, can add face geometry to {@link ShapeBuilder}s.
- * Thanks go to Richard Invent for the missing block definitions.
+ * Defines block data, can add face geometry to {@link ShapeBuilder}s. Thanks go
+ * to Richard Invent for the missing block definitions.
  * 
  * @author ryanm
  */
@@ -46,18 +45,20 @@ public class BlockFactory
 	private static final ColouredShape itemShape;
 	static
 	{
-		float[] hexVerts = new float[ 2 * 7 ];
+		float[] hexVerts = new float[2 * 7];
 		hexVerts[ 0 ] = 0;
 		hexVerts[ 1 ] = 0;
 
 		float[] angles = new float[] { 30, 90, 150, 210, 270, 330 };
 		for( int i = 0; i < angles.length; i++ )
 		{
-			hexVerts[ 2 * ( i + 1 ) ] = 0.5f * Trig.cos( Trig.toRadians( angles[ i ] ) );
-			hexVerts[ 2 * ( i + 1 ) + 1 ] = 0.5f * Trig.sin( Trig.toRadians( angles[ i ] ) );
+			hexVerts[ 2 * ( i + 1 ) ] =
+					0.5f * Trig.cos( Trig.toRadians( angles[ i ] ) );
+			hexVerts[ 2 * ( i + 1 ) + 1 ] =
+					0.5f * Trig.sin( Trig.toRadians( angles[ i ] ) );
 		}
 
-		float[] itemCoords = new float[ 36 ];
+		float[] itemCoords = new float[36];
 		int i = 0;
 		// top
 		addVert( itemCoords, i++, hexVerts, 0 );
@@ -79,7 +80,7 @@ public class BlockFactory
 
 		short[] tris = ShapeUtil.makeQuads( 12, 0, null, 0 );
 
-		int[] colours = new int[ 12 ];
+		int[] colours = new int[12];
 		int top = Colour.packFloat( 1, 1, 1, 1 );
 		int left = Colour.packFloat( 0.75f, 0.75f, 0.75f, 1 );
 		int right = Colour.packFloat( 0.5f, 0.5f, 0.5f, 1 );
@@ -90,11 +91,12 @@ public class BlockFactory
 			colours[ i + 8 ] = right;
 		}
 
-		itemShape = new ColouredShape( new Shape( itemCoords, tris ), colours, null );
+		itemShape =
+				new ColouredShape( new Shape( itemCoords, tris ), colours, null );
 	}
 
-	private static void addVert( float[] itemVerts, int index, float[] hexCoords,
-			int vertIndex )
+	private static void addVert( float[] itemVerts, int index,
+			float[] hexCoords, int vertIndex )
 	{
 		itemVerts[ 3 * index ] = hexCoords[ 2 * vertIndex ];
 		itemVerts[ 3 * index + 1 ] = hexCoords[ 2 * vertIndex + 1 ];
@@ -118,20 +120,19 @@ public class BlockFactory
 	 */
 	public static void loadTexture()
 	{
-		ResourceLoader.loadNow( new BitmapLoader( R.drawable.terrain ) {
+		ResourceLoader.loadNow( new BitmapLoader( R.drawable.terrain ){
 			@Override
 			public void complete()
 			{
-				Texture terrain = TextureFactory.buildTexture( resource, true, false );
+				Texture terrain =
+						TextureFactory.buildTexture( resource, true, false );
 				BlockFactory.texture = terrain;
 
 				if( texture != null )
 				{
 					state = texture.applyTo( state );
 					for( Block b : Block.values() )
-					{
 						b.blockItemShape.state = state;
-					}
 				}
 
 				resource.bitmap.recycle();
@@ -148,16 +149,12 @@ public class BlockFactory
 		int maxID = 0;
 
 		for( Block b : Block.values() )
-		{
 			maxID = Math.max( maxID, b.id );
-		}
 
-		blocks = new Block[ maxID + 1 ];
+		blocks = new Block[maxID + 1];
 
 		for( Block b : Block.values() )
-		{
 			blocks[ b.id ] = b;
-		}
 	}
 
 	/**
@@ -167,24 +164,20 @@ public class BlockFactory
 	public static Block getBlock( byte id )
 	{
 		if( id >= blocks.length )
-		{
 			return null;
-		}
 
 		return blocks[ id ];
 	}
 
 	/**
 	 * @param id
-	 * @return <code>true</code> if the block is opaque,
-	 *         <code>false</code> if transparent
+	 * @return <code>true</code> if the block is opaque, <code>false</code> if
+	 *         transparent
 	 */
 	public static boolean opaque( byte id )
 	{
 		if( id >= blocks.length || blocks[ id ] == null )
-		{
 			return false;
-		}
 
 		return blocks[ id ].opaque;
 	}
@@ -221,14 +214,12 @@ public class BlockFactory
 		 */
 		Bottom( nbl, fbl, nbr, fbr );
 
-		private final float[] verts = new float[ 12 ];
+		private final float[] verts = new float[12];
 
 		private Face( float[]... verts )
 		{
 			for( int i = 0; i < verts.length; i++ )
-			{
 				System.arraycopy( verts[ i ], 0, this.verts, i * 3, 3 );
-			}
 		}
 	}
 
@@ -354,8 +345,8 @@ public class BlockFactory
 		public final int[] texCoords;
 
 		/**
-		 * Shape with which to draw this block in the gui. It's 1 unit
-		 * high and centered on the origin
+		 * Shape with which to draw this block in the gui. It's 1 unit high and
+		 * centered on the origin
 		 */
 		public final TexturedShape blockItemShape;
 
@@ -363,48 +354,42 @@ public class BlockFactory
 		 * @param id
 		 *           block type identifier
 		 * @param opaque
-		 *           <code>true</code> if you can't see through the
-		 *           block
+		 *           <code>true</code> if you can't see through the block
 		 * @param tc
-		 *           coordinates of the face textures in terrain.png.
-		 *           e.g.: grass is (0,0), stone is (1,0), mossy
-		 *           cobblestone is (4,2)
+		 *           coordinates of the face textures in terrain.png. e.g.: grass
+		 *           is (0,0), stone is (1,0), mossy cobblestone is (4,2)
 		 */
 		private Block( byte id, boolean opaque, int... tc )
 		{
 			this.id = id;
 			this.opaque = opaque;
 			if( tc.length == 6 )
-			{ // similar sides, distinct top, distinct bottom
 				// (ooh matron!)
 				texCoords =
-						new int[] { tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ],
-								tc[ 0 ], tc[ 1 ], tc[ 2 ], tc[ 3 ], tc[ 4 ], tc[ 5 ] };
-			}
+						new int[] { tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 0 ],
+								tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 2 ], tc[ 3 ], tc[ 4 ],
+								tc[ 5 ] };
 			else if( tc.length == 4 )
-			{ // similar sides, similar top and bottom
 				// (don't fancy yours much)
 				texCoords =
-						new int[] { tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ],
-								tc[ 0 ], tc[ 1 ], tc[ 2 ], tc[ 3 ], tc[ 2 ], tc[ 3 ] };
-			}
+						new int[] { tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 0 ],
+								tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 2 ], tc[ 3 ], tc[ 2 ],
+								tc[ 3 ] };
 			else if( tc.length == 2 )
-			{ // all sides similar
 				texCoords =
-						new int[] { tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ],
-								tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ] };
-			}
+						new int[] { tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 0 ],
+								tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 0 ], tc[ 1 ], tc[ 0 ],
+								tc[ 1 ] };
 			else
-			{
 				// all sides distinct
 				texCoords = tc;
-			}
 
-			float[] itc = new float[ 3 * 4 * 2 ];
+			float[] itc = new float[3 * 4 * 2];
 			faceTexCoords( Face.Top, itc, 0 );
 			faceTexCoords( Face.North, itc, 8 );
 			faceTexCoords( Face.West, itc, 16 );
-			blockItemShape = new TexturedShape( BlockFactory.itemShape, itc, texture );
+			blockItemShape =
+					new TexturedShape( BlockFactory.itemShape, itc, texture );
 		}
 
 		private void faceTexCoords( Face face, float[] tc, int index )
@@ -440,12 +425,14 @@ public class BlockFactory
 		 *           Vertex colour
 		 * @param sb
 		 */
-		public void face( Face f, float bx, float by, float bz, int colour, ShapeBuilder sb )
+		public void face( Face f, float bx, float by, float bz, int colour,
+				ShapeBuilder sb )
 		{
 			sb.ensureCapacity( 4, 2 );
 
 			// add vertices
-			System.arraycopy( f.verts, 0, sb.vertices, sb.vertexOffset, f.verts.length );
+			System.arraycopy( f.verts, 0, sb.vertices, sb.vertexOffset,
+					f.verts.length );
 
 			for( int i = 0; i < 4; i++ )
 			{
@@ -466,7 +453,6 @@ public class BlockFactory
 			float tv = sxtn * texCoords[ txco + 1 ];
 
 			if( id == 44 && f != Face.Bottom )
-			{ // half block
 				if( f == Face.Top )
 				{ // shift all down
 					sb.vertices[ sb.vertexOffset - 2 ] -= 0.5f;
@@ -483,7 +469,6 @@ public class BlockFactory
 					bv *= 0.5f;
 					tv *= 0.5f;
 				}
-			}
 
 			sb.texCoords[ sb.texCoordOffset++ ] = bu;
 			sb.texCoords[ sb.texCoordOffset++ ] = bv;

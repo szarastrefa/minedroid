@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid.nbt;
 
 import java.io.DataInputStream;
@@ -61,21 +60,21 @@ public class Tag
 	 * @param value
 	 *           list of tags to add to the new tag.
 	 */
-	public Tag( Type type, String name, Tag[] value )
+	public Tag( final Type type, final String name, final Tag[] value )
 	{
 		this( type, name, ( Object ) value );
 	}
 
 	/**
-	 * Create a new TAG_List with an empty list. Use
-	 * {@link Tag#addTag(Tag)} to add tags later.
+	 * Create a new TAG_List with an empty list. Use {@link Tag#addTag(Tag)} to
+	 * add tags later.
 	 * 
 	 * @param name
 	 *           name for this tag or null to create an unnamed tag.
 	 * @param listType
 	 *           type of the elements in this empty list.
 	 */
-	public Tag( String name, Type listType )
+	public Tag( final String name, final Type listType )
 	{
 		this( Type.TAG_List, name, listType );
 	}
@@ -88,94 +87,69 @@ public class Tag
 	 * @param name
 	 *           name for the new tag or null to create an unnamed tag.
 	 * @param value
-	 *           an object that fits the tag type or a {@link Type} to
-	 *           create an empty TAG_List with this list type.
+	 *           an object that fits the tag type or a {@link Type} to create an
+	 *           empty TAG_List with this list type.
 	 */
-	public Tag( Type type, String name, Object value )
+	public Tag( final Type type, final String name, Object value )
 	{
 		if( type == Type.TAG_Compound )
-		{
 			if( !( value instanceof Tag[] ) )
-			{
 				throw new IllegalArgumentException();
-			}
-		}
 		switch( type )
 		{
 			case TAG_End:
 				if( value != null )
-				{
 					throw new IllegalArgumentException();
-				}
 				break;
 			case TAG_Byte:
 				if( !( value instanceof Byte ) )
-				{
 					throw new IllegalArgumentException();
-				}
 				break;
 			case TAG_Short:
 				if( !( value instanceof Short ) )
-				{
 					throw new IllegalArgumentException();
-				}
 				break;
 			case TAG_Int:
 				if( !( value instanceof Integer ) )
-				{
 					throw new IllegalArgumentException();
-				}
 				break;
 			case TAG_Long:
 				if( !( value instanceof Long ) )
-				{
 					throw new IllegalArgumentException();
-				}
 				break;
 			case TAG_Float:
 				if( !( value instanceof Float ) )
-				{
 					throw new IllegalArgumentException();
-				}
 				break;
 			case TAG_Double:
 				if( !( value instanceof Double ) )
-				{
 					throw new IllegalArgumentException();
-				}
 				break;
 			case TAG_Byte_Array:
 				if( !( value instanceof byte[] ) )
-				{
 					throw new IllegalArgumentException();
-				}
 				break;
 			case TAG_String:
 				if( !( value instanceof String ) )
-				{
 					throw new IllegalArgumentException();
-				}
 				break;
 			case TAG_List:
 				if( value instanceof Type )
 				{
 					listType = ( Type ) value;
-					value = new Tag[ 0 ];
+					value = new Tag[0];
 				}
 				else
 				{
 					if( !( value instanceof Tag[] ) )
-					{
 						throw new IllegalArgumentException();
-					}
-					listType = ( ( com.ryanm.minedroid.nbt.Tag[] ) value )[ 0 ].getType();
+					listType =
+							( ( com.ryanm.minedroid.nbt.Tag[] ) value )[ 0 ].getType();
 				}
 				break;
 			case TAG_Compound:
 				if( !( value instanceof Tag[] ) )
-				{
 					throw new IllegalArgumentException();
-				}
 				break;
 			default:
 				throw new IllegalArgumentException();
@@ -222,51 +196,40 @@ public class Tag
 	 * 
 	 * @param tag
 	 */
-	public void addTag( Tag tag )
+	public void addTag( final Tag tag )
 	{
 		if( type != Type.TAG_List && type != Type.TAG_Compound )
-		{
 			throw new RuntimeException();
-		}
-		Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
+		final Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
 		insertTag( tag, subtags.length );
 	}
 
 	/**
-	 * Add a tag to a TAG_List or a TAG_Compound at the specified
-	 * index.
+	 * Add a tag to a TAG_List or a TAG_Compound at the specified index.
 	 * 
 	 * @param tag
 	 * @param index
 	 */
-	public void insertTag( Tag tag, int index )
+	public void insertTag( final Tag tag, final int index )
 	{
 		if( type != Type.TAG_List && type != Type.TAG_Compound )
-		{
 			throw new RuntimeException();
-		}
-		Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
+		final Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
 		if( subtags.length > 0 )
-		{
 			if( type == Type.TAG_List && tag.getType() != getListType() )
-			{
 				throw new IllegalArgumentException();
-			}
-		}
 		if( index > subtags.length )
-		{
 			throw new IndexOutOfBoundsException();
-		}
-		Tag[] newValue = new Tag[ subtags.length + 1 ];
+		final Tag[] newValue = new Tag[subtags.length + 1];
 		System.arraycopy( subtags, 0, newValue, 0, index );
 		newValue[ index ] = tag;
-		System.arraycopy( subtags, index, newValue, index + 1, subtags.length - index );
+		System.arraycopy( subtags, index, newValue, index + 1, subtags.length
+				- index );
 		value = newValue;
 	}
 
 	/**
-	 * Remove a tag from a TAG_List or a TAG_Compound at the specified
-	 * index.
+	 * Remove a tag from a TAG_List or a TAG_Compound at the specified index.
 	 * 
 	 * @param index
 	 * @return the removed tag
@@ -274,64 +237,51 @@ public class Tag
 	public Tag removeTag( int index )
 	{
 		if( type != Type.TAG_List && type != Type.TAG_Compound )
-		{
 			throw new RuntimeException();
-		}
-		Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
-		Tag victim = subtags[ index ];
-		Tag[] newValue = new Tag[ subtags.length - 1 ];
+		final Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
+		final Tag victim = subtags[ index ];
+		final Tag[] newValue = new Tag[subtags.length - 1];
 		System.arraycopy( subtags, 0, newValue, 0, index );
 		index++;
-		System.arraycopy( subtags, index, newValue, index - 1, subtags.length - index );
+		System.arraycopy( subtags, index, newValue, index - 1, subtags.length
+				- index );
 		value = newValue;
 		return victim;
 	}
 
 	/**
-	 * Remove a tag from a TAG_List or a TAG_Compound. If the tag is
-	 * not a child of this tag then nested tags are searched.
+	 * Remove a tag from a TAG_List or a TAG_Compound. If the tag is not a child
+	 * of this tag then nested tags are searched.
 	 * 
 	 * @param tag
 	 *           tag to look for
 	 */
-	public void removeSubTag( Tag tag )
+	public void removeSubTag( final Tag tag )
 	{
 		if( type != Type.TAG_List && type != Type.TAG_Compound )
-		{
 			throw new RuntimeException();
-		}
 		if( tag == null )
-		{
 			return;
-		}
-		Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
+		final Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
 		for( int i = 0; i < subtags.length; i++ )
-		{
 			if( subtags[ i ] == tag )
 			{
 				removeTag( i );
 				return;
 			}
-			else
-			{
-				if( subtags[ i ].type == Type.TAG_List
-						|| subtags[ i ].type == Type.TAG_Compound )
-				{
-					subtags[ i ].removeSubTag( tag );
-				}
-			}
-		}
+			else if( subtags[ i ].type == Type.TAG_List
+					|| subtags[ i ].type == Type.TAG_Compound )
+				subtags[ i ].removeSubTag( tag );
 	}
 
 	/**
 	 * Find the first nested tag with specified name in a TAG_Compound.
 	 * 
 	 * @param name
-	 *           the name to look for. May be null to look for unnamed
-	 *           tags.
+	 *           the name to look for. May be null to look for unnamed tags.
 	 * @return the first nested tag that has the specified name.
 	 */
-	public Tag findTagByName( String name )
+	public Tag findTagByName( final String name )
 	{
 		return findNextTagByName( name, null );
 	}
@@ -341,43 +291,30 @@ public class Tag
 	 * TAG_Compound after a tag with the same name.
 	 * 
 	 * @param name
-	 *           the name to look for. May be null to look for unnamed
-	 *           tags.
+	 *           the name to look for. May be null to look for unnamed tags.
 	 * @param found
 	 *           the previously found tag with the same name.
-	 * @return the first nested tag that has the specified name after
-	 *         the previously found tag.
+	 * @return the first nested tag that has the specified name after the
+	 *         previously found tag.
 	 */
-	public Tag findNextTagByName( String name, Tag found )
+	public Tag findNextTagByName( final String name, final Tag found )
 	{
 		if( type != Type.TAG_List && type != Type.TAG_Compound )
-		{
 			return null;
-		}
-		Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
-		for( Tag subtag : subtags )
-		{
+		final Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
+		for( final Tag subtag : subtags )
 			if( subtag.name == null && name == null || subtag.name != null
 					&& subtag.name.equals( name ) )
-			{
 				return subtag;
-			}
 			else
 			{
-				Tag newFound = subtag.findTagByName( name );
+				final Tag newFound = subtag.findTagByName( name );
 				if( newFound != null )
-				{
 					if( newFound == found )
-					{
 						continue;
-					}
 					else
-					{
 						return newFound;
-					}
-				}
 			}
-		}
 		return null;
 	}
 
@@ -390,26 +327,26 @@ public class Tag
 	 *           <code>true</code> if the stream is gzipped
 	 * @return NBT tag or structure read from the InputStream
 	 * @throws IOException
-	 *            if there was no valid NBT structure in the
-	 *            InputStream or if another IOException occurred.
+	 *            if there was no valid NBT structure in the InputStream or if
+	 *            another IOException occurred.
 	 */
-	public static Tag readFrom( InputStream is, boolean compressed ) throws IOException
+	public static Tag readFrom( final InputStream is, final boolean compressed )
+			throws IOException
 	{
-		DataInputStream dis =
+		final DataInputStream dis =
 				new DataInputStream( compressed ? new GZIPInputStream( is ) : is );
 
-		byte type = dis.readByte();
+		final byte type = dis.readByte();
 		if( type == 0 )
-		{
 			return new Tag( Type.TAG_End, null, null );
-		}
 		else
-		{
-			return new Tag( Type.values()[ type ], dis.readUTF(), readPayload( dis, type ) );
-		}
+			return new Tag( Type.values()[ type ], dis.readUTF(), readPayload(
+					dis, type ) );
 	}
 
-	private static Object readPayload( DataInputStream dis, byte type ) throws IOException
+	private static Object
+			readPayload( final DataInputStream dis, final byte type )
+					throws IOException
 	{
 		switch( type )
 		{
@@ -428,43 +365,37 @@ public class Tag
 			case 6:
 				return new Double( dis.readDouble() );
 			case 7:
-				int length = dis.readInt();
-				byte[] ba = new byte[ length ];
+				final int length = dis.readInt();
+				final byte[] ba = new byte[length];
 				dis.readFully( ba );
 				return ba;
 			case 8:
 				return dis.readUTF();
 			case 9:
-				byte lt = dis.readByte();
-				int ll = dis.readInt();
-				Tag[] lo = new Tag[ ll ];
+				final byte lt = dis.readByte();
+				final int ll = dis.readInt();
+				final Tag[] lo = new Tag[ll];
 				for( int i = 0; i < ll; i++ )
-				{
-					lo[ i ] = new Tag( Type.values()[ lt ], null, readPayload( dis, lt ) );
-				}
+					lo[ i ] =
+							new Tag( Type.values()[ lt ], null, readPayload( dis, lt ) );
 				if( lo.length == 0 )
-				{
 					return Type.values()[ lt ];
-				}
 				else
-				{
 					return lo;
-				}
 			case 10:
 				byte stt;
-				Tag[] tags = new Tag[ 0 ];
+				Tag[] tags = new Tag[0];
 				do
 				{
 					stt = dis.readByte();
 					String name = null;
 					if( stt != 0 )
-					{
 						name = dis.readUTF();
-					}
-					Tag[] newTags = new Tag[ tags.length + 1 ];
+					final Tag[] newTags = new Tag[tags.length + 1];
 					System.arraycopy( tags, 0, newTags, 0, tags.length );
 					newTags[ tags.length ] =
-							new Tag( Type.values()[ stt ], name, readPayload( dis, stt ) );
+							new Tag( Type.values()[ stt ], name,
+									readPayload( dis, stt ) );
 					tags = newTags;
 				}
 				while( stt != 0 );
@@ -479,13 +410,14 @@ public class Tag
 	 * @param os
 	 *           stream to write to, like a FileOutputStream
 	 * @throws IOException
-	 *            if this is not a valid NBT structure or if any
-	 *            IOException occurred.
+	 *            if this is not a valid NBT structure or if any IOException
+	 *            occurred.
 	 */
-	public void writeTo( OutputStream os ) throws IOException
+	public void writeTo( final OutputStream os ) throws IOException
 	{
 		GZIPOutputStream gzos;
-		DataOutputStream dos = new DataOutputStream( gzos = new GZIPOutputStream( os ) );
+		final DataOutputStream dos =
+				new DataOutputStream( gzos = new GZIPOutputStream( os ) );
 		dos.writeByte( type.ordinal() );
 		if( type != Type.TAG_End )
 		{
@@ -496,7 +428,7 @@ public class Tag
 		gzos.close();
 	}
 
-	private void writePayload( DataOutputStream dos ) throws IOException
+	private void writePayload( final DataOutputStream dos ) throws IOException
 	{
 		switch( type )
 		{
@@ -521,7 +453,7 @@ public class Tag
 				dos.writeDouble( ( ( Double ) value ).doubleValue() );
 				break;
 			case TAG_Byte_Array:
-				byte[] ba = ( byte[] ) value;
+				final byte[] ba = ( byte[] ) value;
 				dos.writeInt( ba.length );
 				dos.write( ba );
 				break;
@@ -529,20 +461,18 @@ public class Tag
 				dos.writeUTF( ( String ) value );
 				break;
 			case TAG_List:
-				Tag[] list = ( com.ryanm.minedroid.nbt.Tag[] ) value;
+				final Tag[] list = ( com.ryanm.minedroid.nbt.Tag[] ) value;
 				dos.writeByte( getListType().ordinal() );
 				dos.writeInt( list.length );
-				for( Tag tt : list )
-				{
+				for( final Tag tt : list )
 					tt.writePayload( dos );
-				}
 				break;
 			case TAG_Compound:
-				Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
-				for( Tag st : subtags )
+				final Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) value;
+				for( final Tag st : subtags )
 				{
-					Tag subtag = st;
-					Type type = subtag.getType();
+					final Tag subtag = st;
+					final Type type = subtag.getType();
 					dos.writeByte( type.ordinal() );
 					if( type != Type.TAG_End )
 					{
@@ -562,7 +492,7 @@ public class Tag
 		print( this, 0 );
 	}
 
-	private String getTypeString( Type type )
+	private static String getTypeString( final Type type )
 	{
 		switch( type )
 		{
@@ -592,87 +522,71 @@ public class Tag
 		return null;
 	}
 
-	private void indent( int indent )
+	private static void indent( final int indent )
 	{
 		for( int i = 0; i < indent; i++ )
-		{
 			System.out.print( "   " );
-		}
 	}
 
-	private void print( Tag t, int indent )
+	private void print( final Tag t, final int indent )
 	{
-		Type type = t.getType();
+		final Type type = t.getType();
 		if( type == Type.TAG_End )
-		{
 			return;
-		}
-		String name = t.getName();
+		final String name = t.getName();
 		indent( indent );
 		System.out.print( getTypeString( t.getType() ) );
 		if( name != null )
-		{
 			System.out.print( "(\"" + t.getName() + "\")" );
-		}
 		if( type == Type.TAG_Byte_Array )
 		{
-			byte[] b = ( byte[] ) t.getValue();
+			final byte[] b = ( byte[] ) t.getValue();
 			System.out.println( ": [" + b.length + " bytes]" );
 		}
 		else if( type == Type.TAG_List )
 		{
-			Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) t.getValue();
+			final Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) t.getValue();
 			System.out.println( ": " + subtags.length + " entries of type "
 					+ getTypeString( t.getListType() ) );
-			for( Tag st : subtags )
-			{
+			for( final Tag st : subtags )
 				print( st, indent + 1 );
-			}
 			indent( indent );
 			System.out.println( "}" );
 		}
 		else if( type == Type.TAG_Compound )
 		{
-			Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) t.getValue();
+			final Tag[] subtags = ( com.ryanm.minedroid.nbt.Tag[] ) t.getValue();
 			System.out.println( ": " + ( subtags.length - 1 ) + " entries" );
 			indent( indent );
 			System.out.println( "{" );
-			for( Tag st : subtags )
-			{
+			for( final Tag st : subtags )
 				print( st, indent + 1 );
-			}
 			indent( indent );
 			System.out.println( "}" );
 		}
 		else
-		{
 			System.out.println( ": " + t.getValue() );
-		}
 	}
 
 	@Override
 	public String toString()
 	{
-		StringBuilder buff = new StringBuilder( "Tag " );
+		final StringBuilder buff = new StringBuilder( "Tag " );
 		buff.append( name );
 		buff.append( " " ).append( type ).append( " " );
 
 		if( type == Type.TAG_List )
 		{
-			Tag[] tl = ( com.ryanm.minedroid.nbt.Tag[] ) value;
+			final Tag[] tl = ( com.ryanm.minedroid.nbt.Tag[] ) value;
 			buff.append( listType ).append( " " ).append( tl.length );
 			buff.append( "\n[" );
 
-			for( Tag tag : tl )
-			{
+			for( final Tag tag : tl )
 				buff.append( tag.toString() ).append( ", " );
-			}
 			buff.append( "]" );
 		}
 		else
-		{
 			buff.append( value );
-		}
 
 		return buff.toString();
 	}

@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid.nbt;
 
 import java.io.File;

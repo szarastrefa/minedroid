@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid;
 
 import com.ryanm.droid.rugl.geom.ColouredShape;
@@ -34,16 +33,14 @@ public class ItemFactory
 	 */
 	public static void loadTexture()
 	{
-		ResourceLoader.loadNow( new BitmapLoader( R.drawable.items ) {
+		ResourceLoader.loadNow( new BitmapLoader( R.drawable.items ){
 			@Override
 			public void complete()
 			{
 				itemTexture = TextureFactory.buildTexture( resource, true, false );
 
 				if( itemTexture != null )
-				{
 					itemState = itemTexture.applyTo( itemState );
-				}
 			}
 		} );
 	}
@@ -56,19 +53,17 @@ public class ItemFactory
 	public enum Item
 	{
 		/***/
-		DiamondPick( 3, 6 )
-		{
+		DiamondPick( 3, 6 ) {
 			@Override
-			public boolean isAppropriateTool( Block b )
+			public boolean isAppropriateTool( final Block b )
 			{
 				return Block.Cobble == b || Block.Stone == b;
 			}
 		},
 		/***/
-		DiamondShovel( 3, 5 )
-		{
+		DiamondShovel( 3, 5 ) {
 			@Override
-			public boolean isAppropriateTool( Block b )
+			public boolean isAppropriateTool( final Block b )
 			{
 				return Block.Dirt == b || Block.Grass == b || Block.Sand == b
 						|| Block.Gravel == b;
@@ -77,10 +72,9 @@ public class ItemFactory
 		/***/
 		DiamondSword( 3, 4 ),
 		/***/
-		DiamondAxe( 3, 7 )
-		{
+		DiamondAxe( 3, 7 ) {
 			@Override
-			public boolean isAppropriateTool( Block b )
+			public boolean isAppropriateTool( final Block b )
 			{
 				return Block.Wood == b || Block.Log == b;
 			}
@@ -99,8 +93,7 @@ public class ItemFactory
 		Glass( Block.Glass );
 
 		/**
-		 * 1-unit high, origin-centered, shape with the appropriate
-		 * texture
+		 * 1-unit high, origin-centered, shape with the appropriate texture
 		 */
 		public final TexturedShape itemShape;
 
@@ -109,10 +102,11 @@ public class ItemFactory
 		 */
 		public final Block block;
 
-		private Item( int s, int t )
+		private Item( final int s, final int t )
 		{
-			float[] texCoords =
-					ShapeUtil.vertFlipQuadTexCoords( ShapeUtil.getQuadTexCoords( 1 ) );
+			final float[] texCoords =
+					ShapeUtil
+							.vertFlipQuadTexCoords( ShapeUtil.getQuadTexCoords( 1 ) );
 			for( int i = 0; i < texCoords.length; i += 2 )
 			{
 				texCoords[ i ] += s;
@@ -122,13 +116,14 @@ public class ItemFactory
 				texCoords[ i + 1 ] /= 16;
 			}
 
-			Shape shape = ShapeUtil.filledQuad( -0.5f, -0.5f, 0.5f, 0.5f, 0 );
-			ColouredShape cs = new ColouredShape( shape, Colour.white, itemState );
+			final Shape shape = ShapeUtil.filledQuad( -0.5f, -0.5f, 0.5f, 0.5f, 0 );
+			final ColouredShape cs =
+					new ColouredShape( shape, Colour.white, itemState );
 			itemShape = new TexturedShape( cs, texCoords, itemTexture );
 			block = null;
 		}
 
-		private Item( Block block )
+		private Item( final Block block )
 		{
 			itemShape = block.blockItemShape;
 			this.block = block;
@@ -136,10 +131,11 @@ public class ItemFactory
 
 		/**
 		 * @param b
-		 * @return <code>true</code> if this tool is appropriate to
-		 *         break the given block
+		 * @return <code>true</code> if this tool is appropriate to break the
+		 *         given block
 		 */
-		public boolean isAppropriateTool( Block b )
+		@SuppressWarnings( "static-method" )
+		public boolean isAppropriateTool( final Block b )
 		{
 			return false;
 		}

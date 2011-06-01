@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid.chunk;
 
 import com.ryanm.droid.rugl.geom.ColouredShape;
@@ -59,8 +58,8 @@ public class Chunklet
 	private VBOShape solidVBO;
 
 	/**
-	 * This is where we hold a new solid geometry vbo, fresh from the
-	 * generation thread
+	 * This is where we hold a new solid geometry vbo, fresh from the generation
+	 * thread
 	 */
 	private VBOShape pendingSolid;
 
@@ -70,8 +69,8 @@ public class Chunklet
 	private VBOShape transparentVBO;
 
 	/**
-	 * This is where we hold a new transparent geometry vbo, fresh from
-	 * the generation thread
+	 * This is where we hold a new transparent geometry vbo, fresh from the
+	 * generation thread
 	 */
 	private VBOShape pendingTransparent;
 
@@ -82,38 +81,32 @@ public class Chunklet
 	boolean geomPending = false;
 
 	/**
-	 * <code>true</code> if the north side of this chunklet is
-	 * completely opaque
+	 * <code>true</code> if the north side of this chunklet is completely opaque
 	 */
 	public boolean northSheet = true;
 
 	/**
-	 * <code>true</code> if the bottom side of this chunklet is
-	 * completely opaque
+	 * <code>true</code> if the bottom side of this chunklet is completely opaque
 	 */
 	public boolean bottomSheet = true;
 
 	/**
-	 * <code>true</code> if the east side of this chunklet is
-	 * completely opaque
+	 * <code>true</code> if the east side of this chunklet is completely opaque
 	 */
 	public boolean eastSheet = true;
 
 	/**
-	 * <code>true</code> if the south side of this chunklet is
-	 * completely opaque
+	 * <code>true</code> if the south side of this chunklet is completely opaque
 	 */
 	public boolean southSheet = true;
 
 	/**
-	 * <code>true</code> if the top side of this chunklet is completely
-	 * opaque
+	 * <code>true</code> if the top side of this chunklet is completely opaque
 	 */
 	public boolean topSheet = true;
 
 	/**
-	 * <code>true</code> if the west side of this chunklet is
-	 * completely opaque
+	 * <code>true</code> if the west side of this chunklet is completely opaque
 	 */
 	public boolean westSheet = true;
 
@@ -122,8 +115,8 @@ public class Chunklet
 	private boolean boundariesEmptyChecked = false;
 
 	/**
-	 * Stops us revisiting this chunklet when we flood-fill the view
-	 * frustum to find which chunklets to render
+	 * Stops us revisiting this chunklet when we flood-fill the view frustum to
+	 * find which chunklets to render
 	 */
 	public int drawFlag = 0;
 
@@ -145,7 +138,6 @@ public class Chunklet
 	private void findSheets()
 	{
 		for( int i = 0; i < 16; i++ )
-		{
 			for( int j = 0; j < 16; j++ )
 			{
 				byte bt = blockType( 0, i, j );
@@ -166,26 +158,18 @@ public class Chunklet
 				bt = blockType( i, 0, j );
 				bottomSheet &= BlockFactory.opaque( bt );
 			}
-		}
 
 		// empty check
 		empty =
 				!( northSheet || southSheet || eastSheet || westSheet || topSheet || bottomSheet );
 		for( int x = 0; x < 16 && empty; x++ )
-		{
 			for( int z = 0; z < 16 && empty; z++ )
-			{
 				for( int k = 0; k < 16 && empty; k++ )
-				{
 					empty &= blockType( x, k, z ) == 0;
-				}
-			}
-		}
 	}
 
 	/**
-	 * @return <code>true</code> if there is no solid geometry in this
-	 *         chunklet
+	 * @return <code>true</code> if there is no solid geometry in this chunklet
 	 */
 	public boolean isEmpty()
 	{
@@ -196,8 +180,7 @@ public class Chunklet
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return The distance from the center of this chunklet to the
-	 *         point
+	 * @return The distance from the center of this chunklet to the point
 	 */
 	public float distanceSq( float x, float y, float z )
 	{
@@ -209,8 +192,7 @@ public class Chunklet
 	}
 
 	/**
-	 * Call this to refresh the chunklet's geometry the next time it is
-	 * rendered
+	 * Call this to refresh the chunklet's geometry the next time it is rendered
 	 */
 	public void geomDirty()
 	{
@@ -232,22 +214,16 @@ public class Chunklet
 		if( pendingSolid != null )
 		{
 			if( solidVBO != null )
-			{
 				solidVBO.delete();
-			}
 			solidVBO = pendingSolid;
 			pendingSolid = null;
 		}
 
 		if( solidVBO != null )
-		{
 			solidVBO.draw();
-		}
 
 		if( solidVA != null )
-		{
 			solidVA.render( r );
-		}
 	}
 
 	/**
@@ -263,29 +239,22 @@ public class Chunklet
 		if( pendingTransparent != null )
 		{
 			if( transparentVBO != null )
-			{
 				transparentVBO.delete();
-			}
 			transparentVBO = pendingTransparent;
 			pendingTransparent = null;
 		}
 
 		if( transparentVBO != null )
-		{
 			transparentVBO.draw();
-		}
 
 		if( transparentVA != null )
-		{
 			transparentVA.render( r );
-		}
 	}
 
 	/**
 	 * @param synchronous
-	 *           <code>true</code> to generate right now, before doing
-	 *           anything else, <code>false</code> to do it in another
-	 *           thread
+	 *           <code>true</code> to generate right now, before doing anything
+	 *           else, <code>false</code> to do it in another thread
 	 */
 	public void generateGeometry( boolean synchronous )
 	{
@@ -293,7 +262,6 @@ public class Chunklet
 		{
 			// need to check the sides of neighbouring blocks too
 			for( int i = 0; i < 16 && empty; i++ )
-			{
 				for( int j = 0; j < 16 && empty; j++ )
 				{
 					empty &= blockType( -1, i, j ) == 0;
@@ -305,7 +273,6 @@ public class Chunklet
 					empty &= blockType( i, j, -1 ) == 0;
 					empty &= blockType( i, j, 16 ) == 0;
 				}
-			}
 			boundariesEmptyChecked = true;
 		}
 
@@ -332,7 +299,8 @@ public class Chunklet
 	 * @param solid
 	 * @param transparent
 	 */
-	public void geometryComplete( CompiledShape solid, CompiledShape transparent )
+	public void
+			geometryComplete( CompiledShape solid, CompiledShape transparent )
 	{
 		geomPending = false;
 		geomDirty = false;
@@ -377,9 +345,9 @@ public class Chunklet
 	@Override
 	public String toString()
 	{
-		return "Chunklet @ " + x + ", " + y + ", " + z + "\nsheets n " + northSheet + " s "
-				+ southSheet + "\n e " + eastSheet + " w " + westSheet + "\n t " + topSheet
-				+ " b " + bottomSheet;
+		return "Chunklet @ " + x + ", " + y + ", " + z + "\nsheets n "
+				+ northSheet + " s " + southSheet + "\n e " + eastSheet + " w "
+				+ westSheet + "\n t " + topSheet + " b " + bottomSheet;
 	}
 
 	/**
@@ -411,13 +379,9 @@ public class Chunklet
 	public void unload()
 	{
 		if( solidVBO != null )
-		{
 			solidVBO.delete();
-		}
 
 		if( transparentVBO != null )
-		{
 			transparentVBO.delete();
-		}
 	}
 }

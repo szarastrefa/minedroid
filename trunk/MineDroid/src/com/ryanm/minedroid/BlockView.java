@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid;
 
 import static android.opengl.GLES10.GL_COLOR_BUFFER_BIT;
@@ -69,9 +68,7 @@ public class BlockView extends Phase
 		cam.far = 80;
 
 		if( gui == null )
-		{
 			gui = new GUI( player, world, cam, game.getSensorManager() );
-		}
 
 		BlockFactory.loadTexture();
 		ItemFactory.loadTexture();
@@ -91,8 +88,9 @@ public class BlockView extends Phase
 	@Override
 	public void openGLinit()
 	{
-		GLES10.glClearColor( Colour.redf( skyColour ), Colour.greenf( skyColour ),
-				Colour.bluef( skyColour ), Colour.alphaf( skyColour ) );
+		GLES10.glClearColor( Colour.redf( skyColour ),
+				Colour.greenf( skyColour ), Colour.bluef( skyColour ),
+				Colour.alphaf( skyColour ) );
 	}
 
 	@Override
@@ -137,12 +135,8 @@ public class BlockView extends Phase
 	public void onKeyDown( int keyCode, KeyEvent event )
 	{
 		if( keyCode == KeyEvent.KEYCODE_BACK )
-		{
 			complete = true;
-		}
 		else if( keyCode == KeyEvent.KEYCODE_MENU )
-		{
 			game.launchConfiguration();
-		}
 	}
 }

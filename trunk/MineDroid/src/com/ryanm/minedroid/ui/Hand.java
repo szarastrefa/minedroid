@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid.ui;
 
 import com.ryanm.droid.rugl.gl.StackedRenderer;
@@ -67,8 +66,8 @@ public class Hand
 	 * Initiates a single strike if we are not already striking
 	 * 
 	 * @param fast
-	 *           <code>true</code> to do a fast strike,
-	 *           <code>false</code> for slow
+	 *           <code>true</code> to do a fast strike, <code>false</code> for
+	 *           slow
 	 */
 	public void strike( boolean fast )
 	{
@@ -104,14 +103,10 @@ public class Hand
 	public void advance( float delta )
 	{
 		if( swing || strikeCycle != 0 )
-		{
 			strikeCycle += Trig.TWO_PI * delta / currentStrikeTime;
-		}
 
 		if( strikeCycle > Trig.TWO_PI )
-		{
 			strikeCycle = 0;
-		}
 	}
 
 	/**

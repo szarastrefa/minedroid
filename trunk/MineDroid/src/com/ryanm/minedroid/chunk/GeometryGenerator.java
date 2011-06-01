@@ -1,4 +1,3 @@
-
 package com.ryanm.minedroid.chunk;
 
 import java.util.concurrent.ExecutorService;
@@ -28,7 +27,8 @@ public class GeometryGenerator
 
 	private static ShapeBuilder immediateTransVBOBuilder = new ShapeBuilder();
 
-	private static ExecutorService geomGenService = Executors.newSingleThreadExecutor();
+	private static ExecutorService geomGenService = Executors
+			.newSingleThreadExecutor();
 
 	private static int queueSize = 0;
 
@@ -48,34 +48,33 @@ public class GeometryGenerator
 	 */
 	public static void generate( final Chunklet c, final boolean synchronous )
 	{
-		Runnable r = new Runnable() {
+		Runnable r = new Runnable(){
 			@Override
 			public void run()
 			{
 				ShapeBuilder opaqueVBOBuilder =
-						synchronous ? immediateOpaqueVBOBuilder : queuedOpaqueVBOBuilder;
+						synchronous ? immediateOpaqueVBOBuilder
+								: queuedOpaqueVBOBuilder;
 				ShapeBuilder transVBOBuilder =
-						synchronous ? immediateTransVBOBuilder : queuedTransVBOBuilder;
+						synchronous ? immediateTransVBOBuilder
+								: queuedTransVBOBuilder;
 
 				// not sure why this is needed, but it is
 				opaqueVBOBuilder.clear();
 				transVBOBuilder.clear();
 
 				for( int xi = 0; xi < 16; xi++ )
-				{
 					for( int yi = 0; yi < 16; yi++ )
-					{
 						for( int zi = 0; zi < 16; zi++ )
 						{
-							Block b = BlockFactory.getBlock( c.blockType( xi, yi, zi ) );
+							Block b =
+									BlockFactory.getBlock( c.blockType( xi, yi, zi ) );
 
 							float light = c.light( xi, yi, zi );
 
 							if( b == Block.Slab )
-							{ // wow, so now I know why Markus doesn't like
 								// the half-blocks
 								light = c.light( xi, yi + 1, zi );
-							}
 
 							int colour = Colour.packFloat( light, light, light, 1 );
 
@@ -95,8 +94,6 @@ public class GeometryGenerator
 										opaqueVBOBuilder, transVBOBuilder );
 							}
 						}
-					}
-				}
 
 				TexturedShape s = opaqueVBOBuilder.compile();
 				if( s != null )
@@ -115,15 +112,11 @@ public class GeometryGenerator
 				{
 					VBOShape solid = null;
 					if( s != null )
-					{
 						solid = new VBOShape( s );
-					}
 
 					VBOShape transparent = null;
 					if( t != null )
-					{
 						transparent = new VBOShape( t );
-					}
 
 					c.geometryComplete( solid, transparent );
 				}
@@ -131,15 +124,11 @@ public class GeometryGenerator
 				{
 					CompiledShape solid = null;
 					if( s != null )
-					{
 						solid = new CompiledShape( s );
-					}
 
 					CompiledShape transparent = null;
 					if( t != null )
-					{
 						transparent = new CompiledShape( t );
-					}
 
 					c.geometryComplete( solid, transparent );
 				}
@@ -150,23 +139,17 @@ public class GeometryGenerator
 
 		queueSize++;
 		if( synchronous )
-		{
 			r.run();
-		}
 		else
-		{
 			geomGenService.submit( r );
-		}
 	}
 
-	private static void addFace( Chunklet c, Block facing, int x, int y, int z, Face f,
-			int colour, ShapeBuilder opaque, ShapeBuilder transparent )
+	private static void addFace( Chunklet c, Block facing, int x, int y, int z,
+			Face f, int colour, ShapeBuilder opaque, ShapeBuilder transparent )
 	{
 		Block b = BlockFactory.getBlock( c.blockType( x, y, z ) );
 
 		if( b != null && b != facing )
-		{
 			b.face( f, x, y, z, colour, b.opaque ? opaque : transparent );
-		}
 	}
 }
