@@ -5,7 +5,6 @@ import java.io.File;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 
 import com.ryanm.droid.rugl.Game;
@@ -49,13 +48,9 @@ public class MineDroidActivity extends GameActivity
 						} );
 		loadDialog = pd;
 
-		final File world1Dir =
-				new File( Environment.getExternalStorageDirectory(),
-						".minecraft/saves/World1" );
-
 		// It's verboten to do IO on the main event thread, so let's
 		// load level.dat using the resourceloader
-		final TagLoader tl = new TagLoader( new File( world1Dir, "level.dat" ) ){
+		final TagLoader tl = new TagLoader( new File( dir, "level.dat" ) ){
 			@Override
 			public void complete()
 			{
@@ -89,7 +84,7 @@ public class MineDroidActivity extends GameActivity
 								p.y = ( ( Double ) tl[ 1 ].getValue() ).floatValue();
 								p.z = ( ( Double ) tl[ 2 ].getValue() ).floatValue();
 
-								final World w = new World( world1Dir, p );
+								final World w = new World( dir, p );
 
 								final Game game =
 										new Game( MineDroidActivity.this,
