@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.ryanm.minedroid" android:versionCode="13"
-	android:versionName="Extra lucky bugfix edition">
+	package="com.ryanm.minedroid" android:versionCode="15"
+	android:versionName="Multiverse edition - small screen fix">
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
 		
 		<activity android:name=".WorldChooserActivity" android:label="@string/app_name"

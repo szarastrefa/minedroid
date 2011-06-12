@@ -11,11 +11,11 @@ Installation:
 			"adb -d install MineDroid.apk"
 	or download it from your phone's browser and tap it in the download list to
 	install.
-	3) Run the app, a ".minecraft/saves" directory will be created on your 
-	phone's storage
-	2) Copy your "World1" directory over into the saves directory on your phone.
-	3) That's it. If there's some problem with loading the level.dat in the save 
-	directory you'll get a notification when you try to start the app.
+	2) Copy your minecraft saved worlds onto your phone's storage
+	3) Launch the app and hit "Scan for worlds" - it'll search through the phone 
+	storage and list any worlds it finds. You can stop the search at any time by
+	hitting back - you will not lose the worlds found so far.
+	4) Tap the world you want to explore.
 	The starting position of the camera is taken from the level.dat file and 
 	the nether is not supported, so make sure you save your game in the over-world
 	before you copy the save across

@@ -91,7 +91,9 @@ public class GUI
 		public void pointerRemoved( final Pointer p )
 		{
 			for( int i = 0; i < widgets.length; i++ )
+			{
 				widgets[ i ].pointerRemoved( p );
+			}
 		}
 
 		@Override
@@ -99,7 +101,9 @@ public class GUI
 		{
 			boolean eaten = false;
 			for( int i = 0; i < widgets.length && !eaten; i++ )
+			{
 				eaten |= widgets[ i ].pointerAdded( p );
+			}
 
 			return false;
 		}
@@ -108,7 +112,9 @@ public class GUI
 		public void reset()
 		{
 			for( int i = 0; i < widgets.length; i++ )
+			{
 				widgets[ i ].reset();
+			}
 		}
 	};
 
@@ -171,7 +177,9 @@ public class GUI
 		left.advance();
 
 		if( !sensorSteering.isEnabled() )
+		{
 			right.advance();
+		}
 
 		rightTap.advance();
 
@@ -182,13 +190,19 @@ public class GUI
 
 		notifyTime -= delta;
 		if( notifyTime < 0 )
+		{
 			notification = null;
+		}
 
 		// steering
 		if( sensorSteering.isEnabled() )
+		{
 			sensorSteering.advance( cam );
+		}
 		else
+		{
 			cam.advance( delta, right.x, right.y );
+		}
 	}
 
 	/**
@@ -197,7 +211,8 @@ public class GUI
 	 */
 	public void draw()
 	{
-		GLUtil.scaledOrtho( 800, 480, Game.screenWidth, Game.screenHeight, -1, 1 );
+		GLUtil.scaledOrtho( Game.gameWidth, Game.gameHeight, Game.screenWidth,
+				Game.screenHeight, -1, 1 );
 		glClear( GL_DEPTH_BUFFER_BIT );
 
 		hand.draw( r );
@@ -207,14 +222,18 @@ public class GUI
 		left.draw( r );
 
 		if( !sensorSteering.isEnabled() )
+		{
 			right.draw( r );
+		}
 
 		rightTap.draw( r );
 
 		hotbar.draw( r );
 
 		if( notification != null )
+		{
 			notification.render( r );
+		}
 
 		r.render();
 	}

@@ -81,7 +81,7 @@ public class WorldChooserActivity extends ListActivity
 		final List<String> worldList = new LinkedList<String>();
 		final StringBuilder buff = new StringBuilder();
 
-		worldList.add( "Scan for worlds" );
+		worldList.add( "Scan for worlds..." );
 		for( final File f : worlds )
 		{
 			worldList.add( f.getName() );
